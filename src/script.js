@@ -1,58 +1,107 @@
 // import three js library
 import * as THREE from "three";
-console.log(THREE);
 
-// ################ Creating first scene : ###################
-// To create a scene we need 4 elements:
-// 1. A Scene that will contain objects
-// 2. An Object
-// 3. A Camera
-// 4. A Renderer
-
-// Scene : scene is like a container. Where we put all the objects, a camera , lights and many things
-// To create a scene we use
+// Scene
 const scene = new THREE.Scene();
 
-// Objects can be many things : Primitive geometries, imported models, particles, lights etc.
-// To create a visible object we need to create a "Mesh". Mesh is combination of "Geometry" and "Material".
+// ##################### Grouping ##################
 
-// To create a geometry. Cube
+// Create a group
+const group = new THREE.Group();
+
+// Applying transformation on group
+group.position.y = 1;
+group.scale.y = 1.4;
+group.rotation.y = 1;
+
+// Adding group to scene
+scene.add(group);
+
+// -------- Creating Objects ----------
+const cube1 = new THREE.Mesh(
+  new THREE.BoxGeometry(1, 1, 1),
+  new THREE.MeshBasicMaterial({ color: 0xff0000 })
+);
+const cube2 = new THREE.Mesh(
+  new THREE.BoxGeometry(1, 1, 1),
+  new THREE.MeshBasicMaterial({ color: 0x00ff00 })
+);
+cube2.position.x = -2;
+const cube3 = new THREE.Mesh(
+  new THREE.BoxGeometry(1, 1, 1),
+  new THREE.MeshBasicMaterial({ color: 0xff00ff })
+);
+cube3.position.x = 2;
+// -------------------------------------
+
+// Adding objects to group
+group.add(cube1);
+group.add(cube2);
+group.add(cube3);
+
+// Objects
 const geometry = new THREE.BoxGeometry(1, 1, 1); // width,height,depth
-// To create a material
+// Material
 const material = new THREE.MeshBasicMaterial({ color: "#162355" });
 
-// To Instantiate a mesh
+// Mesh
 const mesh = new THREE.Mesh(geometry, material);
+// Do position related stuff before render()
 
-// Now we have to add this Object/Mesh to the scene
+// ################ POSITION ##############
+mesh.position.x = 0.7;
+mesh.position.y = -0.7;
+mesh.position.y = -0.6;
+// can also use "set" method to set values of x,y,z
+// mesh.position.set(0.7, -0.1, 1);
 
-scene.add(mesh);
-// just adding mesh to scene won't let it visible on screen.
-// we need a point of view and for that we use camera
+// gives us the distance between center of the scene and postion of mesh.
+// console.log(mesh.position.length());
 
-// Camera : Camera is just serve as a Point of view. Can have multiple camera and switch between them.
+// gives distance between some random point and object.
+// console.log(mesh.position.distanceTo(new THREE.Vector3(1, 1, 1)));
 
-// 1st arg FOV : Vertical vision angle, like a cone, like we see from eye. In degree
-// 2nd arg aspect ratio : width of render divided by height of render
+// Takes the length of the vector and reduces it to 1.
+// mesh.position.normalize();
 
-// For now we are using custom sizes. Later we will use viewport
+// ################ SCALE ##############
 
+mesh.scale.x = 2;
+mesh.scale.y = 0.5;
+mesh.scale.z = 0.5;
+
+// mesh.scale.set(0.5, 0.5, 0.5);
+
+// ################ ROTATION ##############
+
+mesh.rotation.reorder("YXZ");
+mesh.rotation.x = Math.PI * 0.25;
+mesh.rotation.z = Math.PI * 0.25;
+
+// add the Object/Mesh to the scene
+// scene.add(mesh);
+
+// Create Axis Helper
+const axisHelper = new THREE.AxesHelper(); // can increase length of axis using arg
+scene.add(axisHelper);
+
+// Sizes
 const sizes = {
   width: 800,
   height: 600,
 };
-
+// Camera
 const camera = new THREE.PerspectiveCamera(75, sizes.width / sizes.height);
 camera.position.z = 3;
-camera.position.x = 1;
+camera.position.y = 0;
+camera.position.x = 0;
 scene.add(camera);
 
-// Renderer : Render the scene from the camera point of view
-// result is drawn into a canvas
-// a canvas is an HTML element in which we can draw something
-// three.js will use WebGL to draw the render inside the canvas
+// Makes the camera to look at a specific position
+// camera.lookAt(mesh.position);
 
-// create a canvas in the html file.
+// gives us distance between camera and object
+// console.log(mesh.position.distanceTo(camera.position));
 
 // Renderer
 const canvas = document.querySelector(".webgl");
@@ -60,11 +109,6 @@ const renderer = new THREE.WebGLRenderer({
   canvas: canvas,
 });
 
-// we need to provide size to the renderer
-// use setSize() method to update the size of the renderer
-
 renderer.setSize(sizes.width, sizes.height);
-
-// First renderer, to call the renderer use render() method on renderer with "scene" and "camera" as parameter
 
 renderer.render(scene, camera);
