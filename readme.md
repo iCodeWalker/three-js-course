@@ -127,3 +127,27 @@ There are 4 properties to transom objects
    group.add(cube1);
    group.add(cube2);
    group.add(cube3);
+
+   ## Second Chapter : Animating Objects
+
+   For animations we need to update objects and do a render on each frame.
+   We are going to do this inside a function. For this we can use a function window.requestAnimationFrame()
+
+   # IMP : A 60 FPS device will call requestAnimationFrame function 60 times in one second
+
+   The purpose of requestAnimationFrame function is to call the function on the next frame.
+
+   # IMP : The higher the frame rate the faster the animation
+
+   ## ADAPTATION FPS
+
+   We need to do what we call adapt to the framerate, so our animation looks same on devices having different
+   Frame Per Seconds.
+
+   1. For this we can use Time with the help of JS "Date" function:
+   2. Can use Three.js built in solution named "Clock".
+
+   For having more control,create tweensc create timelines we can use a third party library.
+   In this we will use GSAP
+
+   3. Create a tween : gsap.to(mesh.position, { x: 2, duration: 1, delay: 1 });
