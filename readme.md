@@ -139,3 +139,50 @@ For having more control,create tweensc create timelines we can use a third party
 In this we will use GSAP
 
 3.  Create a tween : gsap.to(mesh.position, { x: 2, duration: 1, delay: 1 });
+
+# Third Chapter : Cameras
+
+## Camera is an abstract class. We are not supposed to use it directly.
+
+     Different types of camera :
+      1. Array camera:
+            Render the scene from multiple cameras on a specific area of the render. This can be used for multiple player game where each player has a different view.
+      2. Cube camera:
+            Do 6 renders, each one facing a different direction. can render the surrounding for things like environment map, reflection, refraction, shadow etc. Threejs uses it internally.
+      3. Stereo camera :
+            Render the scene through two cameras that mimic the eyes to create a parallax effect
+      4. Perspective camera :
+            Redner the scene with perspective.
+      5. Orthographic camera :
+            Render the scene withour perspective. Means object have same size no matter it's distance from camera.
+
+      # Perspective Camera :
+
+      const camera = new THREE.PerspectiveCamera(FOV, Aspect ratio, near, far );
+      1. FOV : Vertical vission angle, in degrees
+      2. Aspect ratio : ratio of width of render and height of render.
+      3. Near : How near a camera can see.
+      4. Far : How far a camera can see.
+      IMP : Any object closer than the near or further from the far will not be visible.
+
+      # Orthographic camera :
+
+      Orthographic camera differs from Perspective camera by its lack of perspective.
+      Objects have same size regardless of its distance from the camaera.
+
+      const camera = new THREE.OrthographicCamera(left,right,top,bottom, near,far);
+
+      Custom Contrls :
+
+      To be able to view the objects from different angles we need to have custom controls for camera.
+
+      IMP : First we need mouse coordinates on the page. Listen to the mousemove events with addEventListener and retrieve the event.clientX and event.clientY
+
+      event.clientX and event.clientY have values in pixels, but we can't use them directly.
+
+      Prefer to have value of coordinates as amplitude of "1" i.e. between 0 and 1. In this way it wil work fine on all devices having different screen sizes.
+
+      cursor.x = event.clientX / sizes.width - 0.5;
+      cursor.y = event.clientY / sizes.height - 0.5;
+
+      subtracting 0.5 will give us negative and positive values that will help us with camera positioning
