@@ -181,8 +181,42 @@ In this we will use GSAP
       event.clientX and event.clientY have values in pixels, but we can't use them directly.
 
       Prefer to have value of coordinates as amplitude of "1" i.e. between 0 and 1. In this way it wil work fine on all devices having different screen sizes.
+      We can do this by dividing it by width and height of viewport.
+      ( Ex: event.clientX / sizes.width or
+      event.clientY / sizes.height)
 
       cursor.x = event.clientX / sizes.width - 0.5;
       cursor.y = event.clientY / sizes.height - 0.5;
 
-      subtracting 0.5 will give us negative and positive values that will help us with camera positioning
+      subtracting 0.5 will give us negative and positive values as the amplitude is 1, that will help us with camera positioning.
+
+      We can move the camera around the center of the scene by using Math.sin(), Math.cos() and Math.PI
+
+      IMP : When we combine cos on one axis and sin on another axis with the same angle we get the position on the circle.
+
+      What are the postion we are going to use?
+      What are the axis to position our camera around the cube?
+
+      camera.position.x = Math.sin(cursor.x * 10) * 3;
+      camera.position.z = Math.cos(cursor.x * 10) * 3;
+
+      #################### USING BUILT-IN CONTROL ##################
+
+      1. Device Orientation Controls
+            DeviceOrientationControls will automatically retrieve the device orientation if our device, OS or browser allow it and rotate the camera accordingly. Useful to create immersive universes and VR experience.
+      2. Fly Controls
+            FlyControls enable moving the camera like if we were on a spaceship. We can rotate on all 3-axes.
+            go forward and go backward.
+      3. First Person Control
+            FirstPersonControla is like FlyControls, but with a fixed up axis. Doesn't work like FPS game.
+            useful for moving forward backward in plane. cannot move up or down if we have "x" as fixed axis.
+      4. Pointer Lock Control
+            PointerLockControls uses the pointer lock javascript API. Hard to use and almost only handles the pointer lock and camera rotation. PointerLockControls is all about making cursor disappear.
+      5. Orbit Control
+            OrbitControls similar to controlswe made with more features. Control the axis or orbits for camera movements.
+      6. TrackBall Control
+            TrackBallControls is like OrbitControls without vertical angle limit.
+      7. Transform Control
+            TransformControls has nothing to do with camera. It helps us to move objects
+      8. Drag Control
+            DragControls used to drag objects on the plane

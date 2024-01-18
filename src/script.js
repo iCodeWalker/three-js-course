@@ -1,12 +1,16 @@
 // import three js library
 import * as THREE from "three";
+import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
 
 // ################## CUSTOM CONTROLS ####################
 
 // To be able to view the objects from different angles we need to have custom controls for camera.
 // Get the coordinates of the mouse
 
-// Create a cursor variable to store the value
+// Create a cursor variable to store the value of coordinates of the mouse
+
+// Create canvas
+const canvas = document.querySelector(".webgl");
 
 const cursor = {
   x: 0,
@@ -15,7 +19,7 @@ const cursor = {
 window.addEventListener("mousemove", (event) => {
   cursor.x = event.clientX / sizes.width - 0.5;
   cursor.y = -(event.clientY / sizes.height - 0.5);
-  console.log(cursor.x);
+  console.log(cursor.x, cursor.y);
 });
 
 // Scene
@@ -64,11 +68,20 @@ const camera = new THREE.PerspectiveCamera(
 camera.position.z = 2;
 scene.add(camera);
 
+// ####################### Orbital control #####################
+
+const controls = new OrbitControls(camera, canvas);
+// To change controls target and update the controls after it.
+// controls.target.y = 2
+// controls.update()
 // Makes the camera to look at a specific position
+
+// To add damping, the damping will smooth the animation by adding some kind of acceleration or friction
+controls.enableDamping = true;
 camera.lookAt(mesh.position);
 
 // Renderer
-const canvas = document.querySelector(".webgl");
+
 const renderer = new THREE.WebGLRenderer({
   canvas: canvas,
 });
@@ -87,9 +100,28 @@ const rotateCude = () => {
   // mesh.rotation.y = elapsedTime;
 
   // Update the camera
-  camera.position.x = cursor.x * 3;
-  camera.position.y = cursor.y * 3;
-  camera.lookAt(mesh.position);
+  // camera.position.x = cursor.x * 3;
+  // camera.position.y = cursor.y * 3;
+
+  // can move the camera around the center of the scene by using Math.sin(), Math.cos() and Math.PI
+  // When we combine cos on one axis and sin on another axis with the same angle we get the position on the circle.
+
+  // camera.position.x = Math.sin(cursor.x * 10) * 3;
+  // camera.position.z = Math.cos(cursor.x * 10) * 3;
+  // using static "10" we will get multiple roatations when we move mouse our the canvas
+
+  // For moving camera around x-axis
+  // camera.position.x = Math.sin(cursor.x * Math.PI * 2) * 3;
+  // camera.position.z = Math.cos(cursor.x * Math.PI * 2) * 3;
+  // // For moving camera around y-axis
+  // camera.position.y = cursor.y * 5;
+  // camera.lookAt(mesh.position);
+
+  // #################### USING BUILT-IN CONTROL ##################
+
+  // Here we need to update the controls after every frame render
+  controls.update();
+
   // Render
   renderer.render(scene, camera);
   // Call rotateCube again on next frame.
