@@ -38,8 +38,8 @@ scene.add(mesh);
 
 // Sizes
 const sizes = {
-  width: 800,
-  height: 600,
+  width: window.innerWidth,
+  height: window.innerHeight,
 };
 // ################# Camera #####################
 
@@ -75,6 +75,9 @@ const controls = new OrbitControls(camera, canvas);
 // controls.target.y = 2
 // controls.update()
 // Makes the camera to look at a specific position
+
+// To disable controls
+// controls.enabled = false;
 
 // To add damping, the damping will smooth the animation by adding some kind of acceleration or friction
 controls.enableDamping = true;

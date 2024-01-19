@@ -220,3 +220,5 @@ In this we will use GSAP
             TransformControls has nothing to do with camera. It helps us to move objects
       8. Drag Control
             DragControls used to drag objects on the plane
+
+      To get the viewport width and height we can use, window.innerWidth and window.innerHeight
