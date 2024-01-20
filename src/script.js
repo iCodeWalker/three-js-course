@@ -41,6 +41,32 @@ const sizes = {
   width: window.innerWidth,
   height: window.innerHeight,
 };
+
+// To handle resizing of the window
+// we need to know when the window is being resized, we need to listen to "resize" event
+
+window.addEventListener("resize", () => {
+  // update sizes object
+  sizes.width = window.innerWidth;
+  sizes.height = window.innerHeight;
+
+  // update camera
+  // we need to change the aspect ratio of the camera to resize the canvas
+  camera.aspect = sizes.width / sizes.height;
+
+  // when we update the aspect ratio, we need to alert the camera about the change that they need to update the
+  // projection matrix
+  camera.updateProjectionMatrix();
+
+  // Now we need to update the renderer
+  renderer.setSize(sizes.width, sizes.height);
+
+  // Handle pixel ratio
+  // To get the current pixel ratio we use window.devicePixelRatio
+  // To update the renderer accordingly, we can update the renderer we use
+  renderer.setPixelRatio(window.devicePixelRatio);
+});
+
 // ################# Camera #####################
 
 // --------------- Perspective Camera
@@ -90,6 +116,10 @@ const renderer = new THREE.WebGLRenderer({
 });
 
 renderer.setSize(sizes.width, sizes.height);
+// Handle pixel ratio
+// To get the current pixel ratio we use window.devicePixelRatio
+// To update the renderer accordingly, we can update the renderer we use
+renderer.setPixelRatio(window.devicePixelRatio);
 
 // renderer.render(scene, camera);
 
