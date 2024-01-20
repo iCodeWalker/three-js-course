@@ -67,6 +67,41 @@ window.addEventListener("resize", () => {
   renderer.setPixelRatio(window.devicePixelRatio);
 });
 
+// Listen to double click event
+
+window.addEventListener("dblclick", () => {
+  console.log("double click");
+  // document.fullscreenElement : to see if the user is in fullscreen mode
+
+  // if (!document.fullscreenElement) {
+  //   // To go to fullscreen mode use requestFullScreen() on the concerned element (our <canvas />)
+  //   canvas.requestFullscreen();
+  // } else {
+  //   document.exitFullscreen();
+  // }
+
+  // IMP : for safari we need to add prefixed versions
+
+  const fullScreenElement =
+    document.fullscreenElement || document.webkitFullScreenElement;
+
+  if (!fullScreenElement) {
+    // To go to fullscreen mode use requestFullScreen() on the concerned element (our <canvas />)
+    if (canvas.requestFullscreen) {
+      canvas.requestFullscreen();
+    } else if (canvas.webkitRequestFullscreen) {
+      canvas.webkitRequestFullscreen();
+    }
+    canvas.requestFullscreen();
+  } else {
+    if (document.exitFullscreen) {
+      document.exitFullscreen();
+    } else if (document.webkitExitFullscreen) {
+      document.webkitExitFullscreen();
+    }
+  }
+});
+
 // ################# Camera #####################
 
 // --------------- Perspective Camera
