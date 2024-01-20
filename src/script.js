@@ -60,6 +60,11 @@ window.addEventListener("resize", () => {
 
   // Now we need to update the renderer
   renderer.setSize(sizes.width, sizes.height);
+
+  // Handle pixel ratio
+  // To get the current pixel ratio we use window.devicePixelRatio
+  // To update the renderer accordingly, we can update the renderer we use
+  renderer.setPixelRatio(window.devicePixelRatio);
 });
 
 // ################# Camera #####################
@@ -111,6 +116,10 @@ const renderer = new THREE.WebGLRenderer({
 });
 
 renderer.setSize(sizes.width, sizes.height);
+// Handle pixel ratio
+// To get the current pixel ratio we use window.devicePixelRatio
+// To update the renderer accordingly, we can update the renderer we use
+renderer.setPixelRatio(window.devicePixelRatio);
 
 // renderer.render(scene, camera);
 
