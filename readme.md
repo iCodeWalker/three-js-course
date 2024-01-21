@@ -222,3 +222,33 @@ In this we will use GSAP
             DragControls used to drag objects on the plane
 
       To get the viewport width and height we can use, window.innerWidth and window.innerHeight
+
+# Fourth Chapter : Geometries
+
+      1. Geometry is composed of vertices (point coordinates in 3D spaces) and faces (triangle that join those vertices to create a surface)
+      2. Can be used for meshes but can also be used for particles. One Vertex makes one particle.
+      3. In geometries we can store more data than just coordinates, each of the vertex have will have position, UV coordinates, normal and many more things.
+
+      ## Built-in geometries
+
+      All geometries inherit from BufferGeometry. This class has many built-in methods like translate(),   rotateX(), normal()
+
+      1. BoxGeometry()
+      2. PlaneGeometry()
+      3. CircleGeometry()
+      4. ConeGeometry()
+      5. CylinderGeometry()
+      6. RingGeometry()
+      7. TorusGeomtry()
+      8. TorusKnotGeometry()
+      9. DodecahedronGeomtry()
+      10. OctahedronGeometry()
+      11. TetrahedronGeometry()
+      12. SphereGeometry()
+      13. ShapeGeometry()
+      14. TubeGeomtry()
+      15. ExtrudeGeometry()
+      16. LatheGeomtry()
+      17. TextGeomtry()
+
+      By combining these geometries we can create pretty complex shapes.
