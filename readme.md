@@ -222,3 +222,56 @@ In this we will use GSAP
             DragControls used to drag objects on the plane
 
       To get the viewport width and height we can use, window.innerWidth and window.innerHeight
+
+# Fourth Chapter : Geometries
+
+      1. Geometry is composed of vertices (point coordinates in 3D spaces) and faces (triangle that join those vertices to create a surface)
+      2. Can be used for meshes but can also be used for particles. One Vertex makes one particle.
+      3. In geometries we can store more data than just coordinates, each of the vertex have will have position, UV coordinates, normal and many more things.
+
+      ## Built-in geometries
+
+      All geometries inherit from BufferGeometry. This class has many built-in methods like translate(),   rotateX(), normal()
+
+      1. BoxGeometry()
+      2. PlaneGeometry()
+      3. CircleGeometry()
+      4. ConeGeometry()
+      5. CylinderGeometry()
+      6. RingGeometry()
+      7. TorusGeomtry()
+      8. TorusKnotGeometry()
+      9. DodecahedronGeomtry()
+      10. OctahedronGeometry()
+      11. TetrahedronGeometry()
+      12. SphereGeometry()
+      13. ShapeGeometry()
+      14. TubeGeomtry()
+      15. ExtrudeGeometry()
+      16. LatheGeomtry()
+      17. TextGeomtry()
+
+      By combining these geometries we can create pretty complex shapes.
+
+      Box Geomtry : Has 6 parameters
+            1. width : The size on the x-axis.
+            2. height : The size on the y-axis.
+            3. depth : The size on the z-axis.
+            4. widthSegments : How many subdivisions in the x-axis.
+            5. heightSegments : How many subdivisions in the y-axis.
+            6. depthSegments : How many subdivisions in the z-axis.
+
+            Subdivisions correspond to how much triangles should compose a face.
+            1 = 2 triangles per face
+            2 = 8 triangles per face
+
+            const geometry = new THREE.BoxGeometry(1,1,1,2,2,2)
+
+            IMP : To have more details we need more triangles.
+
+            We can use 'wireframe : true' on the material to have a view of segments.
+
+            ## CREATING OWN BUFFER GEOMETRY
+            We crete our own triangle and with that triangle we create bunch of more triangles
+
+      ## To store buffer geometry data we are going to use Float32Array
