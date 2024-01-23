@@ -252,3 +252,26 @@ In this we will use GSAP
       17. TextGeomtry()
 
       By combining these geometries we can create pretty complex shapes.
+
+      Box Geomtry : Has 6 parameters
+            1. width : The size on the x-axis.
+            2. height : The size on the y-axis.
+            3. depth : The size on the z-axis.
+            4. widthSegments : How many subdivisions in the x-axis.
+            5. heightSegments : How many subdivisions in the y-axis.
+            6. depthSegments : How many subdivisions in the z-axis.
+
+            Subdivisions correspond to how much triangles should compose a face.
+            1 = 2 triangles per face
+            2 = 8 triangles per face
+
+            const geometry = new THREE.BoxGeometry(1,1,1,2,2,2)
+
+            IMP : To have more details we need more triangles.
+
+            We can use 'wireframe : true' on the material to have a view of segments.
+
+            ## CREATING OWN BUFFER GEOMETRY
+            We crete our own triangle and with that triangle we create bunch of more triangles
+
+      ## To store buffer geometry data we are going to use Float32Array

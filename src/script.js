@@ -26,9 +26,16 @@ window.addEventListener("mousemove", (event) => {
 const scene = new THREE.Scene();
 
 // Objects
-const geometry = new THREE.BoxGeometry(1, 1, 1, 5, 5, 5); // width,height,depth
+const geometry = new THREE.BoxGeometry(1, 1, 1, 2, 2, 2); // width,height,depth
+
+// ################### CREATING OWN BUFFER GEOMETRY ####################
+
+// To store buffer geometry data we are going to use Float32Array
 // Material
-const material = new THREE.MeshBasicMaterial({ color: "#162355" });
+const material = new THREE.MeshBasicMaterial({
+  wireframe: true, // to view triangles that makes plane
+  color: "#162355",
+});
 
 // Mesh
 const mesh = new THREE.Mesh(geometry, material);
