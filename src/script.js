@@ -49,16 +49,33 @@ const scene = new THREE.Scene();
 // positionsArray[7] = 0;
 // positionsArray[8] = 0;
 
-const positionsArray = new Float32Array([0, 0, 0, 0, 1, 0, 1, 0, 0]);
+// const positionsArray = new Float32Array([0, 0, 0, 0, 1, 0, 1, 0, 0]);
 
 // now we have to convert this Float32Array to a BufferAttribute
 
-const positionsAttribute = new THREE.BufferAttribute(positionsArray, 3);
+// const positionsAttribute = new THREE.BufferAttribute(positionsArray, 3);
 // "3" corresponds to how much values compose  one vertex
 
 // now we can add this BufferAttribute to our BufferGeometry
+// const geometry = new THREE.BufferGeometry();
+// geometry.setAttribute("position", positionsAttribute);
+
+// ################### CREATING BUNCH OF RANDOM TRIANGLES WITH BUFFER GEOMETRY ####################
+
 const geometry = new THREE.BufferGeometry();
-geometry.setAttribute("position", positionsAttribute);
+
+const count = 500;
+const positionsArray = new Float32Array(count * 3 * 3); // need 50 triangles, that have 3 vertex each with 3 coordinates
+
+// Fill the array with random data
+
+for (let i = 0; i < count * 3 * 3; i++) {
+  positionsArray[i] = (Math.random() - 0.5) * 4;
+}
+
+const positionAttribute = new THREE.BufferAttribute(positionsArray, 3);
+
+geometry.setAttribute("position", positionAttribute);
 
 // Material
 const material = new THREE.MeshBasicMaterial({
