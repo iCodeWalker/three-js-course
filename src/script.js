@@ -26,11 +26,57 @@ window.addEventListener("mousemove", (event) => {
 const scene = new THREE.Scene();
 
 // Objects
-const geometry = new THREE.BoxGeometry(1, 1, 1, 2, 2, 2); // width,height,depth
+// const geometry = new THREE.BoxGeometry(1, 1, 1, 2, 2, 2); // width,height,depth
 
 // ################### CREATING OWN BUFFER GEOMETRY ####################
 
 // To store buffer geometry data we are going to use Float32Array
+
+// Ways to create and fill Float32Array
+
+//  const positionsArray = new Float32Array(9);
+
+// // value of 1st vertex
+// positionsArray[0] = 0; // x coordinate
+// positionsArray[1] = 0; // y coordinate
+// positionsArray[2] = 0; // z coordinate
+// // value of 2nd vertex
+// positionsArray[3] = 0;
+// positionsArray[4] = 1;
+// positionsArray[5] = 0;
+// // value of 3rd vertex
+// positionsArray[6] = 1;
+// positionsArray[7] = 0;
+// positionsArray[8] = 0;
+
+// const positionsArray = new Float32Array([0, 0, 0, 0, 1, 0, 1, 0, 0]);
+
+// now we have to convert this Float32Array to a BufferAttribute
+
+// const positionsAttribute = new THREE.BufferAttribute(positionsArray, 3);
+// "3" corresponds to how much values compose  one vertex
+
+// now we can add this BufferAttribute to our BufferGeometry
+// const geometry = new THREE.BufferGeometry();
+// geometry.setAttribute("position", positionsAttribute);
+
+// ################### CREATING BUNCH OF RANDOM TRIANGLES WITH BUFFER GEOMETRY ####################
+
+const geometry = new THREE.BufferGeometry();
+
+const count = 500;
+const positionsArray = new Float32Array(count * 3 * 3); // need 50 triangles, that have 3 vertex each with 3 coordinates
+
+// Fill the array with random data
+
+for (let i = 0; i < count * 3 * 3; i++) {
+  positionsArray[i] = (Math.random() - 0.5) * 4;
+}
+
+const positionAttribute = new THREE.BufferAttribute(positionsArray, 3);
+
+geometry.setAttribute("position", positionAttribute);
+
 // Material
 const material = new THREE.MeshBasicMaterial({
   wireframe: true, // to view triangles that makes plane
