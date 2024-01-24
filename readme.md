@@ -271,7 +271,36 @@ In this we will use GSAP
 
             We can use 'wireframe : true' on the material to have a view of segments.
 
-            ## CREATING OWN BUFFER GEOMETRY
-            We crete our own triangle and with that triangle we create bunch of more triangles
+## CREATING OWN BUFFER GEOMETRY
 
-      ## To store buffer geometry data we are going to use Float32Array
+      We crete our own triangle and with that triangle we create bunch of more triangles
+
+      1. To store buffer geometry data we are going to use Float32Array. We are going to store vertices coordinates to create the faces
+      2. Float32Array : Typed Array, stores float values, fixed length, Easier to handle for computers
+
+      Ways to create and fill Float32Array:
+
+       const positionsArray = new Float32Array(9);
+
+      // value of 1st vertex
+      positionsArray[0] = 0; // x coordinate
+      positionsArray[1] = 0; // y coordinate
+      positionsArray[2] = 0; // z coordinate
+      // value of 2nd vertex
+      positionsArray[3] = 0;
+      positionsArray[4] = 1;
+      positionsArray[5] = 0;
+      // value of 3rd vertex
+      positionsArray[6] = 1;
+      positionsArray[7] = 0;
+      positionsArray[8] = 0;
+
+      const positionsArray = new Float32Array([0, 0, 0, 0, 1, 0, 1, 0, 0]);
+
+      ## now we have to convert this Float32Array to a BufferAttribute
+
+      const positionsAttribute = new THREE.BufferAttribute(positionsArray, 3); // "3" corresponds to how much values compose  one vertex.
+
+      ## now we can add this BufferAttribute to our BufferGeometry
+
+      geometry.setAttribute('position', positionsAttribute)
