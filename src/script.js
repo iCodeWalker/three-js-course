@@ -26,7 +26,7 @@ window.addEventListener("mousemove", (event) => {
 const scene = new THREE.Scene();
 
 // Objects
-// const geometry = new THREE.BoxGeometry(1, 1, 1, 2, 2, 2); // width,height,depth
+const geometry = new THREE.BoxGeometry(1, 1, 1, 2, 2, 2); // width,height,depth
 
 // ################### CREATING OWN BUFFER GEOMETRY ####################
 
@@ -62,24 +62,24 @@ const scene = new THREE.Scene();
 
 // ################### CREATING BUNCH OF RANDOM TRIANGLES WITH BUFFER GEOMETRY ####################
 
-const geometry = new THREE.BufferGeometry();
+// const geometry = new THREE.BufferGeometry();
 
-const count = 500;
-const positionsArray = new Float32Array(count * 3 * 3); // need 50 triangles, that have 3 vertex each with 3 coordinates
+// const count = 500;
+// const positionsArray = new Float32Array(count * 3 * 3); // need 50 triangles, that have 3 vertex each with 3 coordinates
 
-// Fill the array with random data
+// // Fill the array with random data
 
-for (let i = 0; i < count * 3 * 3; i++) {
-  positionsArray[i] = (Math.random() - 0.5) * 4;
-}
+// for (let i = 0; i < count * 3 * 3; i++) {
+//   positionsArray[i] = (Math.random() - 0.5) * 4;
+// }
 
-const positionAttribute = new THREE.BufferAttribute(positionsArray, 3);
+// const positionAttribute = new THREE.BufferAttribute(positionsArray, 3);
 
-geometry.setAttribute("position", positionAttribute);
+// geometry.setAttribute("position", positionAttribute);
 
 // Material
 const material = new THREE.MeshBasicMaterial({
-  wireframe: true, // to view triangles that makes plane
+  // wireframe: true, // to view triangles that makes plane
   color: "#162355",
 });
 
