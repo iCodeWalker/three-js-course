@@ -304,3 +304,48 @@ In this we will use GSAP
       ## now we can add this BufferAttribute to our BufferGeometry
 
       geometry.setAttribute('position', positionsAttribute)
+
+# Fifth Chapter : Debug UI
+
+      // To instantiate debug ui
+      const gui = new lil.GUI();
+
+      // Elements also known as tweaks
+
+      There are different types of elements we can add to the debug panel
+      1. Range : for number with minimum and maximum value
+      2. Color : for color with various format
+      3. Text : for simple texts
+      4. Checkbox : for booleans
+      5. Select : for choice from a list of values
+      6. Button : to trigger functions
+      7. Folder : to organise panel if we have many elements.
+
+      ## To add elements to the panel we can use gui.add(...)
+      1st parameter is an object
+      2nd parameter is the property we want to tweak
+      3rd paramter is minimum value
+      4th parameter is maximum value
+      5th paramter is steps
+
+      gui.add(mesh.position, 'y', -3, 3. 0.1)
+
+      // can also use min(...), max(...) and step(...) methods on the gui
+
+      gui.add(mesh.position, 'y').min().max().step()
+      gui.add(mesh, "visible");
+      gui.add(material, "wireframe");
+      gui.addColor(material, "color");
+
+      // To trigger a function, we need to store it in an object, we can use a 'parameters' object and create
+      // a spin method
+
+      const parameters = {
+            color: 0xff0000,
+            spin: () => {
+                  console.log("spin");
+                  gsap.to(mesh.rotation, { duration: 1, y: mesh.rotation.y + Math.PI * 2 });
+            },
+      };
+
+      gui.add(parameters, "spin");

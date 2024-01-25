@@ -1,8 +1,21 @@
 // import three js library
 import * as THREE from "three";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
+import gsap from "gsap";
+import * as lil from "lil-gui";
+
+// ################## DEBUG UI ####################
+// instantiate debug ui
+
+const gui = new lil.GUI();
 
 // ################## CUSTOM CONTROLS ####################
+
+// Sizes
+const sizes = {
+  width: window.innerWidth,
+  height: window.innerHeight,
+};
 
 // To be able to view the objects from different angles we need to have custom controls for camera.
 // Get the coordinates of the mouse
@@ -89,11 +102,42 @@ const mesh = new THREE.Mesh(geometry, material);
 // add the Object/Mesh to the scene
 scene.add(mesh);
 
-// Sizes
-const sizes = {
-  width: window.innerWidth,
-  height: window.innerHeight,
+// ####################### Debug ###################
+// To add elements to the panel we can use
+// gui.add(mesh.position, "y", -3, 3, 0.01);
+gui.add(mesh.position, "x", -3, 3, 0.01);
+gui.add(mesh.position, "z", -3, 3, 0.01);
+
+// can also use min(...), max(...) and step(...) methods on the gui
+gui.add(mesh.position, "y").min(-3).max(3).step(0.01).name("elevation");
+
+gui.add(mesh, "visible");
+
+gui.add(material, "wireframe");
+
+gui.addColor(material, "color");
+
+// Previously to change color we have to do it other way
+
+// const parameters = {
+//   color: 0xff0000,
+// };
+// gui.addColor(parameters, "color").onChange(() => {
+//   material.color.set(parameters.color);
+// });
+
+// To trigger a function, we need to store it in an object, we can use a 'parameters' object and create
+// a spin method
+
+const parameters = {
+  color: 0xff0000,
+  spin: () => {
+    console.log("spin");
+    gsap.to(mesh.rotation, { duration: 1, y: mesh.rotation.y + Math.PI * 2 });
+  },
 };
+
+gui.add(parameters, "spin");
 
 // To handle resizing of the window
 // we need to know when the window is being resized, we need to listen to "resize" event
