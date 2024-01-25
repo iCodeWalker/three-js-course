@@ -1,8 +1,21 @@
 // import three js library
 import * as THREE from "three";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
+import gsap from "gsap";
+import * as lil from "lil-gui";
+
+// ################## DEBUG UI ####################
+// instantiate debug ui
+
+const gui = new lil.GUI();
 
 // ################## CUSTOM CONTROLS ####################
+
+// Sizes
+const sizes = {
+  width: window.innerWidth,
+  height: window.innerHeight,
+};
 
 // To be able to view the objects from different angles we need to have custom controls for camera.
 // Get the coordinates of the mouse
@@ -26,7 +39,7 @@ window.addEventListener("mousemove", (event) => {
 const scene = new THREE.Scene();
 
 // Objects
-// const geometry = new THREE.BoxGeometry(1, 1, 1, 2, 2, 2); // width,height,depth
+const geometry = new THREE.BoxGeometry(1, 1, 1, 2, 2, 2); // width,height,depth
 
 // ################### CREATING OWN BUFFER GEOMETRY ####################
 
@@ -62,24 +75,24 @@ const scene = new THREE.Scene();
 
 // ################### CREATING BUNCH OF RANDOM TRIANGLES WITH BUFFER GEOMETRY ####################
 
-const geometry = new THREE.BufferGeometry();
+// const geometry = new THREE.BufferGeometry();
 
-const count = 500;
-const positionsArray = new Float32Array(count * 3 * 3); // need 50 triangles, that have 3 vertex each with 3 coordinates
+// const count = 500;
+// const positionsArray = new Float32Array(count * 3 * 3); // need 50 triangles, that have 3 vertex each with 3 coordinates
 
-// Fill the array with random data
+// // Fill the array with random data
 
-for (let i = 0; i < count * 3 * 3; i++) {
-  positionsArray[i] = (Math.random() - 0.5) * 4;
-}
+// for (let i = 0; i < count * 3 * 3; i++) {
+//   positionsArray[i] = (Math.random() - 0.5) * 4;
+// }
 
-const positionAttribute = new THREE.BufferAttribute(positionsArray, 3);
+// const positionAttribute = new THREE.BufferAttribute(positionsArray, 3);
 
-geometry.setAttribute("position", positionAttribute);
+// geometry.setAttribute("position", positionAttribute);
 
 // Material
 const material = new THREE.MeshBasicMaterial({
-  wireframe: true, // to view triangles that makes plane
+  // wireframe: true, // to view triangles that makes plane
   color: "#162355",
 });
 
@@ -89,11 +102,42 @@ const mesh = new THREE.Mesh(geometry, material);
 // add the Object/Mesh to the scene
 scene.add(mesh);
 
-// Sizes
-const sizes = {
-  width: window.innerWidth,
-  height: window.innerHeight,
+// ####################### Debug ###################
+// To add elements to the panel we can use
+// gui.add(mesh.position, "y", -3, 3, 0.01);
+gui.add(mesh.position, "x", -3, 3, 0.01);
+gui.add(mesh.position, "z", -3, 3, 0.01);
+
+// can also use min(...), max(...) and step(...) methods on the gui
+gui.add(mesh.position, "y").min(-3).max(3).step(0.01).name("elevation");
+
+gui.add(mesh, "visible");
+
+gui.add(material, "wireframe");
+
+gui.addColor(material, "color");
+
+// Previously to change color we have to do it other way
+
+// const parameters = {
+//   color: 0xff0000,
+// };
+// gui.addColor(parameters, "color").onChange(() => {
+//   material.color.set(parameters.color);
+// });
+
+// To trigger a function, we need to store it in an object, we can use a 'parameters' object and create
+// a spin method
+
+const parameters = {
+  color: 0xff0000,
+  spin: () => {
+    console.log("spin");
+    gsap.to(mesh.rotation, { duration: 1, y: mesh.rotation.y + Math.PI * 2 });
+  },
 };
+
+gui.add(parameters, "spin");
 
 // To handle resizing of the window
 // we need to know when the window is being resized, we need to listen to "resize" event
