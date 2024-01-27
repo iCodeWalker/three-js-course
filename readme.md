@@ -349,3 +349,47 @@ In this we will use GSAP
       };
 
       gui.add(parameters, "spin");
+
+# Sixth Chapter : Textures
+
+      Textures are the images that will cover the surface of the geometry.
+
+      Color textures :
+            1. Most Simple One.
+            2. Applied on the geometry
+      Aplha texture :
+            1. Gray Scale images.
+            2. White is visible.
+            3. Black is not visible
+      Height or Displacement texture :
+            1. Gray scale image.
+            2. Move vertices up or down according to the requirement to create some relief.
+            3. Need enough subdivisions. Means enough vertices on the surface.
+            4. like if the area is white vertices may move up and if it is black vertices will down. The gray will stay at its place. Instead of flat plane we will get something like relief Ex : terrain.
+      Normal texture :
+            1. Add details. Mostly about lighting.
+            2. Dosen't need sub divisions.
+            3. The vertices won't move.
+            4. Lure the light about the face orientation.
+            5. Better performance than adding a height texture with a lot of sub divisions.
+      Ambient occlusion texture:
+            1. Gray scale image.
+            2. Add fake shadows in crevices.
+            3. Not physically accurate.
+            4. Help to create contrast and see details.
+      Metalness texture :
+            1. Gray scale image.
+            2. white is metallic.
+            3. black is non metallic.
+            4. Mostly for reflection.
+      Roughness texture :
+            1. Gray scale image.
+            2. In duo with metalness.
+            3. white is rough.
+            4. black is  smooth.
+            5. Mostly for light dissipation.
+      And many others......
+
+      These textures follow PBR principles :
+            Physically Based Rendering
+            Tends to follow real-life directions to get realistice results
