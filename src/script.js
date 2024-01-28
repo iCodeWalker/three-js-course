@@ -37,25 +37,96 @@ import * as lil from "lil-gui";
 
 // instantiate a variable using a TextureLoader class and use its .load(..) to create a texture
 
-const textureLoader = new THREE.TextureLoader();
+// # USING LOADING MANAGER #
+
+const loadingManager = new THREE.LoadingManager();
+
+loadingManager.onStart = () => {
+  console.log("onStart");
+};
+
+loadingManager.onLoad = () => {
+  console.log("onLoad ");
+};
+
+loadingManager.onProgress = () => {
+  console.log("onProgress");
+};
+
+loadingManager.onError = () => {
+  console.log("onErrror");
+};
+
+const textureLoader = new THREE.TextureLoader(loadingManager);
 
 // we can send 3 functions after the path
 // load - when the image loaded successfully.
 // progress - when the loading is progress.
 // error - if something went wrong.
 
-const texture = textureLoader.load(
-  "/textures/door/color.jpg",
-  () => {
-    console.log("load...");
-  },
-  () => {
-    console.log("progress...");
-  },
-  () => {
-    console.log("error...");
-  }
+// const texture = textureLoader.load(
+//   "/textures/door/color.jpg",
+//   () => {
+//     console.log("load...");
+//   },
+//   () => {
+//     console.log("progress...");
+//   },
+//   () => {
+//     console.log("error...");
+//   }
+// );
+
+// ##### different textures #####
+
+// const colorTexture = textureLoader.load("/textures/checkerboard-1024x1024.png"); // for minification filter
+// const colorTexture = textureLoader.load("/textures/checkerboard-8x8.png"); // for magnification filter
+const colorTexture = textureLoader.load("/textures/minecraft.png");
+const alphaTexture = textureLoader.load("/textures/door/alpha.jpg");
+const heightTexture = textureLoader.load("/textures/door/height.jpg");
+const normalTexture = textureLoader.load("/textures/door/normal.jpg");
+const ambientOcclusionTexture = textureLoader.load(
+  "/textures/door/ambientOcclusion.jpg"
 );
+const metalnessTexture = textureLoader.load("/textures/door/metalness.jpg");
+const roughnessTexture = textureLoader.load("/textures/door/roughness.jpg");
+
+// ## TRANSFORMING TEXTURE ##
+
+// =============== Repeat
+// colorTexture.repeat.x = 2;
+// colorTexture.repeat.y = 3;
+// By default the texture is not repeated and the last pixel gets stretched
+// We can change this with THREE.RepeatWrapping on the wrapS and wrapT properties
+
+// colorTexture.wrapS = THREE.RepeatWrapping;
+// colorTexture.wrapT = THREE.RepeatWrapping;
+
+// can use MirrorRepeatWrapping to have a  mirror affect
+
+// colorTexture.wrapS = THREE.MirroredRepeatWrapping;
+// colorTexture.wrapT = THREE.MirroredRepeatWrapping;
+
+// =============== offset
+// Shifts the texture
+// colorTexture.offset.x = 0.5;
+// colorTexture.offset.y = 0.5;
+
+// =============== Rotation
+// we can rotate the texture using rotation property
+// The rotation occurs around the bottom left corner, that is the 0, 0 UV coordinate
+colorTexture.rotation = Math.PI * 0.25;
+// We can change the pivot point (the point around which rotation happens) with the center property
+colorTexture.center.x = 0.5;
+colorTexture.center.y = 0.5;
+
+// ## MIPMAPPING ##
+// colorTexture.minFilter = THREE.NearestFilter;
+colorTexture.generateMipmaps = false; // To disable mipmapping when using NearestFilter
+colorTexture.minFilter = THREE.NearestFilter;
+
+// uses a very small image but with the help of this filter we can have a very clear image of texture.
+colorTexture.magFilter = THREE.NearestFilter;
 
 // ################## DEBUG UI ####################
 // instantiate debug ui
@@ -147,7 +218,7 @@ const geometry = new THREE.BoxGeometry(1, 1, 1, 2, 2, 2); // width,height,depth
 const material = new THREE.MeshBasicMaterial({
   // wireframe: true, // to view triangles that makes plane
   // color: "#162355",
-  map: texture,
+  map: colorTexture,
 });
 
 // Mesh
