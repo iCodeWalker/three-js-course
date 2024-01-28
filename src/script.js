@@ -4,6 +4,59 @@ import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
 import gsap from "gsap";
 import * as lil from "lil-gui";
 
+// ################### TEXTURES ######################
+//  LOAD IMAGE USING JAVASCRIPT
+
+// const image = new Image();
+// we can create the texture outside of the function adn update it once the image is
+// loaded with "needsUpdate = true"
+
+// const texture = new THREE.Texture(image); // the image we are passing here is not loaded yet
+
+// functions runs after image is loaded
+// image.onload = () => {
+//   console.log("image loaded");
+// };
+
+// image.src = "/textures/door/color.jpg";
+
+// We cannot use this image directly, so we need to transform it into a Texture.
+// Image is converted into more GPU friendly format
+
+// image.addEventListener("load", () => {
+//   // we need to use this texture in the material
+//   // const texture = new THREE.Texture(image);
+
+//   // Now we tells texture to update itself
+//   texture.needsUpdate = true;
+// });
+
+// image.src = "/textures/door/color.jpg";
+
+// ######## USING TEXTURE LOADER ##########
+
+// instantiate a variable using a TextureLoader class and use its .load(..) to create a texture
+
+const textureLoader = new THREE.TextureLoader();
+
+// we can send 3 functions after the path
+// load - when the image loaded successfully.
+// progress - when the loading is progress.
+// error - if something went wrong.
+
+const texture = textureLoader.load(
+  "/textures/door/color.jpg",
+  () => {
+    console.log("load...");
+  },
+  () => {
+    console.log("progress...");
+  },
+  () => {
+    console.log("error...");
+  }
+);
+
 // ################## DEBUG UI ####################
 // instantiate debug ui
 
@@ -32,7 +85,7 @@ const cursor = {
 window.addEventListener("mousemove", (event) => {
   cursor.x = event.clientX / sizes.width - 0.5;
   cursor.y = -(event.clientY / sizes.height - 0.5);
-  console.log(cursor.x, cursor.y);
+  // console.log(cursor.x, cursor.y);
 });
 
 // Scene
@@ -93,7 +146,8 @@ const geometry = new THREE.BoxGeometry(1, 1, 1, 2, 2, 2); // width,height,depth
 // Material
 const material = new THREE.MeshBasicMaterial({
   // wireframe: true, // to view triangles that makes plane
-  color: "#162355",
+  // color: "#162355",
+  map: texture,
 });
 
 // Mesh
