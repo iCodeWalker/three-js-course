@@ -454,3 +454,16 @@ In this we will use GSAP
       loadingManager.onError = () => {
             console.log("onErrror");
       };
+
+## UV unwrapping
+
+      Textures are being stretched or squeezed in different ways to cover the geometry.
+      This is called UV unwrapping and it's like unwrapping an origami or candy wrap to make it flat.
+      Each vertex will have a 2d coordinate on a flat plane (usually on square)
+
+      UV coordinates are 2d coordinates in plane of the 3d vertex of the model.
+
+      If we create our own geometry we have to specify the UV coordinates.
+      If we are making geometry using a 3d software, we have to do the UV wrapping
+
+      Textures are placed on the geometries using a very specific way because of UV coordinates.
