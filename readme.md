@@ -430,3 +430,27 @@ In this we will use GSAP
                   console.log("error...");
             }
       );
+
+## LOADING MANAGER
+
+      When we have multiple textures or models or texts to load we can use loading manager to know the progress
+      of all this loading
+
+      We can use a LoadingManager to mutualize the events it's useful if we want to know the global loading progress or be informed when everything is loaded
+
+      const loadingManager = new THREE.LoadingManager();
+      loadingManager.onStart = () => {
+            console.log("onStart");
+      };
+
+      loadingManager.onLoad = () => {
+            console.log("onLoad ");
+      };
+
+      loadingManager.onProgress = () => {
+            console.log("onProgress");
+      };
+
+      loadingManager.onError = () => {
+            console.log("onErrror");
+      };

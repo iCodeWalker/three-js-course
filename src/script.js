@@ -37,25 +37,57 @@ import * as lil from "lil-gui";
 
 // instantiate a variable using a TextureLoader class and use its .load(..) to create a texture
 
-const textureLoader = new THREE.TextureLoader();
+// # USING LOADING MANAGER #
+
+const loadingManager = new THREE.LoadingManager();
+
+loadingManager.onStart = () => {
+  console.log("onStart");
+};
+
+loadingManager.onLoad = () => {
+  console.log("onLoad ");
+};
+
+loadingManager.onProgress = () => {
+  console.log("onProgress");
+};
+
+loadingManager.onError = () => {
+  console.log("onErrror");
+};
+
+const textureLoader = new THREE.TextureLoader(loadingManager);
 
 // we can send 3 functions after the path
 // load - when the image loaded successfully.
 // progress - when the loading is progress.
 // error - if something went wrong.
 
-const texture = textureLoader.load(
-  "/textures/door/color.jpg",
-  () => {
-    console.log("load...");
-  },
-  () => {
-    console.log("progress...");
-  },
-  () => {
-    console.log("error...");
-  }
+// const texture = textureLoader.load(
+//   "/textures/door/color.jpg",
+//   () => {
+//     console.log("load...");
+//   },
+//   () => {
+//     console.log("progress...");
+//   },
+//   () => {
+//     console.log("error...");
+//   }
+// );
+
+// ##### different textures #####
+
+const colorTexture = textureLoader.load("/textures/door/color.jpg");
+const alphaTexture = textureLoader.load("/textures/door/alpha.jpg");
+const heightTexture = textureLoader.load("/textures/door/height.jpg");
+const normalTexture = textureLoader.load("/textures/door/normal.jpg");
+const ambientOcclusionTexture = textureLoader.load(
+  "/textures/door/ambientOcclusion.jpg"
 );
+const metalnessTexture = textureLoader.load("/textures/door/metalness.jpg");
+const roughnessTexture = textureLoader.load("/textures/door/roughness.jpg");
 
 // ################## DEBUG UI ####################
 // instantiate debug ui
@@ -147,7 +179,7 @@ const geometry = new THREE.BoxGeometry(1, 1, 1, 2, 2, 2); // width,height,depth
 const material = new THREE.MeshBasicMaterial({
   // wireframe: true, // to view triangles that makes plane
   // color: "#162355",
-  map: texture,
+  map: colorTexture,
 });
 
 // Mesh
