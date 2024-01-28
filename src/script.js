@@ -7,11 +7,11 @@ import * as lil from "lil-gui";
 // ################### TEXTURES ######################
 //  LOAD IMAGE USING JAVASCRIPT
 
-const image = new Image();
+// const image = new Image();
 // we can create the texture outside of the function adn update it once the image is
 // loaded with "needsUpdate = true"
 
-const texture = new THREE.Texture(image); // the image we are passing here is not loaded yet
+// const texture = new THREE.Texture(image); // the image we are passing here is not loaded yet
 
 // functions runs after image is loaded
 // image.onload = () => {
@@ -21,17 +21,41 @@ const texture = new THREE.Texture(image); // the image we are passing here is no
 // image.src = "/textures/door/color.jpg";
 
 // We cannot use this image directly, so we need to transform it into a Texture.
-// Image i converted into more GPU friendly format
+// Image is converted into more GPU friendly format
 
-image.addEventListener("load", () => {
-  // we need to use this texture in the material
-  // const texture = new THREE.Texture(image);
+// image.addEventListener("load", () => {
+//   // we need to use this texture in the material
+//   // const texture = new THREE.Texture(image);
 
-  // Now we tells texture to update itself
-  texture.needsUpdate = true;
-});
+//   // Now we tells texture to update itself
+//   texture.needsUpdate = true;
+// });
 
-image.src = "/textures/door/color.jpg";
+// image.src = "/textures/door/color.jpg";
+
+// ######## USING TEXTURE LOADER ##########
+
+// instantiate a variable using a TextureLoader class and use its .load(..) to create a texture
+
+const textureLoader = new THREE.TextureLoader();
+
+// we can send 3 functions after the path
+// load - when the image loaded successfully.
+// progress - when the loading is progress.
+// error - if something went wrong.
+
+const texture = textureLoader.load(
+  "/textures/door/color.jpg",
+  () => {
+    console.log("load...");
+  },
+  () => {
+    console.log("progress...");
+  },
+  () => {
+    console.log("error...");
+  }
+);
 
 // ################## DEBUG UI ####################
 // instantiate debug ui

@@ -393,3 +393,40 @@ In this we will use GSAP
       These textures follow PBR principles :
             Physically Based Rendering
             Tends to follow real-life directions to get realistice results
+
+## LOAD IMAGE USING NATIVE JAVASCRIPT
+
+      const image = new Image();
+      // we can create the texture outside of the function and update it once the image is
+      // loaded with "needsUpdate = true"
+
+      const texture = new THREE.Texture(image); // the image we are passing here is not loaded yet
+
+      image.addEventListener("load", () => {
+      // we need to use this texture in the material
+            const texture = new THREE.Texture(image);
+      //  Now we tells texture to update itself
+            texture.needsUpdate = true;
+      });
+
+      image.src = "/textures/door/color.jpg";
+
+## LOAD USING TEXTURE LOADER
+
+      const textureLoader = new THREE.TextureLoader();
+            we can send 3 functions after the path
+            load - when the image loaded successfully.
+            progress - when the loading is progress.
+            error - if something went wrong.
+      const texture = textureLoader.load(
+            "/textures/door/color.jpg",
+            () => {
+                  console.log("load...");
+            },
+            () => {
+                  console.log("progress...");
+            },
+            () => {
+                  console.log("error...");
+            }
+      );
