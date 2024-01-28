@@ -467,3 +467,70 @@ In this we will use GSAP
       If we are making geometry using a 3d software, we have to do the UV wrapping
 
       Textures are placed on the geometries using a very specific way because of UV coordinates.
+
+## TRANSFORMING THE TEXTURE
+
+      // =============== Repeat
+      colorTexture.repeat.x = 2;
+      colorTexture.repeat.y = 3;
+      // By default the texture is not repeated and the last pixel gets stretched
+      // We can change this with THREE.RepeatWrapping on the wrapS and wrapT properties
+
+      colorTexture.wrapS = THREE.RepeatWrapping;
+      colorTexture.wrapT = THREE.RepeatWrapping;
+
+      // can use MirrorRepeatWrapping to have a  mirror affect
+
+      colorTexture.wrapS = THREE.MirroredRepeatWrapping;
+      colorTexture.wrapT = THREE.MirroredRepeatWrapping;
+
+      // =============== offset
+      // Shifts the texture
+      colorTexture.offset.x = 0.5;
+      colorTexture.offset.y = 0.5;
+
+      // =============== Rotation
+      // we can rotate the texture using rotation property
+      // The rotation occurs around the bottom left corner, that is the 0, 0 UV coordinate
+      colorTexture.rotation = Math.PI * 0.25;
+      // We can change the pivot point (the point around which rotation happens) with the center property
+      colorTexture.center.x = 0.5;
+      colorTexture.center.y = 0.5;
+
+## Mipmapping
+
+      Mipmapping is a technic that consists of creating half a smaller version of a texture again and again until we get a 1x1 texture.
+      All those texture variations are sent to the GPU, and the GPU will choose the most appropriate version of the texture
+
+      There are 2 types of filter algorithms that we can choose.
+      1. Minification filter
+            Happens when the pixels of texture are smaller than the pixel of render. In simple words, the texture is too big for the surface it covers.
+            When we zoom out to, when the geometry is far from camera.
+
+            We can change the minification filter of the texture using the minFilter property with these 6 values.
+            1. THREE.NearestFilter
+            2. THREE.LinearFilter
+            3. THREE.NearestMipmapNearestFilter
+            4. THREE.NearestMipmapLinearFilter
+            5. THREE.LinearMipmapNearestFilter
+            6. THREE.LinearMipmapLinearFilter (default)
+      2. Maginfication filter
+            Happens when the pixels of the texture are bigger than the pixels of the render. In simple words the texture is too small for the surface it covers.
+
+            We can change the magnification filter of the texture using the magFilterproperty with these 2 values
+            1. THREE.NearestFilter
+            2. THREE.LinearFilter (default)
+
+      // NearestFilter is cheaper than other and we get better performance and better framerates if result is fine go with it.
+
+      IMP : When we use NearestFilter value to minFilter we don't need mipmapping, so instead of letting Threejs and the GPU handle those mipmapping we can deactivate it.
+      colorTexture.generateMipmaps = false
+      colorTexture.minFilter = THREE.NearestFilter;
+
+## When Preparing our texture, we need to have 3 crucial elments.
+
+      1. Weight (.jpg or .png)
+      2. Size (Resolution) have image size in multiple of 2. 512x512, 1024x1024, 512x2048 etc
+      3. Data
+
+      IMP : The difficulty is to find the right combination of texture formats and resolutions.
