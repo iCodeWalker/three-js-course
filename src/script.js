@@ -82,14 +82,18 @@ const textureLoader = new THREE.TextureLoader(loadingManager);
 // const colorTexture = textureLoader.load("/textures/checkerboard-1024x1024.png"); // for minification filter
 // const colorTexture = textureLoader.load("/textures/checkerboard-8x8.png"); // for magnification filter
 const colorTexture = textureLoader.load("/textures/minecraft.png");
-const alphaTexture = textureLoader.load("/textures/door/alpha.jpg");
-const heightTexture = textureLoader.load("/textures/door/height.jpg");
-const normalTexture = textureLoader.load("/textures/door/normal.jpg");
-const ambientOcclusionTexture = textureLoader.load(
+const doorColorTexture = textureLoader.load("/textures/door/color.jpg");
+const doorAlphaTexture = textureLoader.load("/textures/door/alpha.jpg");
+const doorHeightTexture = textureLoader.load("/textures/door/height.jpg");
+const doorNormalTexture = textureLoader.load("/textures/door/normal.jpg");
+const doorAmbientOcclusionTexture = textureLoader.load(
   "/textures/door/ambientOcclusion.jpg"
 );
-const metalnessTexture = textureLoader.load("/textures/door/metalness.jpg");
-const roughnessTexture = textureLoader.load("/textures/door/roughness.jpg");
+const doorMetalnessTexture = textureLoader.load("/textures/door/metalness.jpg");
+const doorRoughnessTexture = textureLoader.load("/textures/door/roughness.jpg");
+
+const matCapTexture = textureLoader.load("/textures/matcaps/1.png");
+const gradientTexture = textureLoader.load("/textures/gradients/3.jpg");
 
 // ## TRANSFORMING TEXTURE ##
 
@@ -215,17 +219,55 @@ const geometry = new THREE.BoxGeometry(1, 1, 1, 2, 2, 2); // width,height,depth
 // geometry.setAttribute("position", positionAttribute);
 
 // Material
-const material = new THREE.MeshBasicMaterial({
-  // wireframe: true, // to view triangles that makes plane
-  // color: "#162355",
-  map: colorTexture,
-});
+// const material = new THREE.MeshBasicMaterial({
+//   // wireframe: true, // to view triangles that makes plane
+//   // color: "#162355",
+//   map: colorTexture,
+// });
+
+// ################################ MATERIALS ##############################
+const material = new THREE.MeshBasicMaterial();
+// material.map = doorColorTexture;
+// material.color = "red" // will give us error,we can set color in two ways
+// material.color = new THREE.Color("pink");
+// material.color.set("#ff00ff");
+// material.wireframe = true;
+
+// opacity controls the general opacity, to have it work we need to set transparent = true
+material.opacity = 0.5;
+material.transparent = true;
+
+// alphamap controls the transparency with texture
+
+material.transparent = true;
+material.alphaMap = doorAlphaTexture;
+
+// side lets us decide which side of face is visible
+// THREE.FrontSide (default)
+// THREE.BackSide
+// THREE.DoubleSide
+material.side = THREE.DoubleSide;
+
+// Create 3 different geometries (a sphere, a plane and a torus)
+
+const sphere = new THREE.Mesh(new THREE.SphereGeometry(0.5, 16, 16), material);
+sphere.position.x = -1.5;
+
+const plane = new THREE.Mesh(new THREE.PlaneGeometry(1, 1), material);
+
+const torus = new THREE.Mesh(
+  new THREE.TorusGeometry(0.3, 0.2, 16, 32),
+  material
+);
+torus.position.x = 1.5;
+
+scene.add(sphere, plane, torus);
 
 // Mesh
 const mesh = new THREE.Mesh(geometry, material);
 
 // add the Object/Mesh to the scene
-scene.add(mesh);
+// scene.add(mesh);
 
 // ####################### Debug ###################
 // To add elements to the panel we can use
@@ -385,6 +427,15 @@ const clock = new THREE.Clock();
 
 const rotateCude = () => {
   const elapsedTime = clock.getElapsedTime();
+
+  // #################### ADD ANIMATION FOR MATERIALS VIEW ##################
+  sphere.rotation.y = 0.1 * elapsedTime;
+  plane.rotation.y = 0.1 * elapsedTime;
+  torus.rotation.y = 0.1 * elapsedTime;
+
+  sphere.rotation.x = 0.15 * elapsedTime;
+  plane.rotation.x = 0.15 * elapsedTime;
+  torus.rotation.x = 0.15 * elapsedTime;
 
   // Update Object
   // mesh.rotation.y = elapsedTime;

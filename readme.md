@@ -534,3 +534,64 @@ In this we will use GSAP
       3. Data
 
       IMP : The difficulty is to find the right combination of texture formats and resolutions.
+
+# SEVENTH CHAPTER : MATERIALS
+
+      Materials are used to put a color on each visible pixel of the geometries.
+      The algorithms are written in the form of the shaders.
+      We don't need to write shaders and can use the built-in materials
+
+      Till now we have used MeshBasicMaterial which applies a uniform color or texture on our geometry.
+
+      const material = new THREE.MeshBasicMaterial({color: 0xff0000});
+
+      // We Create 3 different geometries (a sphere, a plane and a torus)
+
+      const sphere = new THREE.Mesh(new THREE.SphereGeometry(0.5, 16, 16), material);
+      sphere.position.x = -1.5;
+
+      const plane = new THREE.Mesh(new THREE.PlaneGeometry(1, 1), material);
+
+      const torus = new THREE.Mesh(
+            new THREE.TorusGeometry(0.3, 0.2, 16, 32),
+            material
+      );
+      torus.position.x = 1.5;
+
+      scene.add(sphere, plane, torus);
+
+## Material properties can be set in two ways
+
+      1. Directly while instanciating
+            const material = new THREE.MeshBasicMaterial({
+                  map : doorColorTexture
+            })
+
+      2. After instanciating
+            const material = new THREE.MeshBasicMaterial()
+            material.map = doorColorTexture
+
+## Types of Materials :
+
+      1. MeshBasicMaterial :
+            1. It is the most basic material
+            2. const material = new THREE.MeshBasicMaterial();
+                  material.map = doorColorTexture;
+                  material.color = "red" // will give us error,we can set color in two ways
+                  material.color = new THREE.Color("pink");
+                  material.color.set("#ff00ff");
+                  material.wireframe = true;
+
+            // opacity controls the general opacity, to have it work we need to set transparent = true
+                  material.opacity = 0.5;
+                  material.transparent = true;
+
+            // alphamap controls the transparency with texture
+                  material.transparent = true;
+                  material.alphaMap = doorAlphaTexture;
+
+            // side lets us decide which side of face is visible
+                  // THREE.FrontSide (default)
+                  // THREE.BackSide
+                  // THREE.DoubleSide
+                  material.side = THREE.DoubleSide;
