@@ -226,7 +226,8 @@ const geometry = new THREE.BoxGeometry(1, 1, 1, 2, 2, 2); // width,height,depth
 // });
 
 // ################################ MATERIALS ##############################
-const material = new THREE.MeshBasicMaterial();
+// ### MeshBasicMaterial ###
+// const material = new THREE.MeshBasicMaterial();
 // material.map = doorColorTexture;
 // material.color = "red" // will give us error,we can set color in two ways
 // material.color = new THREE.Color("pink");
@@ -234,24 +235,35 @@ const material = new THREE.MeshBasicMaterial();
 // material.wireframe = true;
 
 // opacity controls the general opacity, to have it work we need to set transparent = true
-material.opacity = 0.5;
-material.transparent = true;
+// material.opacity = 0.5;
+// material.transparent = true;
 
 // alphamap controls the transparency with texture
 
-material.transparent = true;
-material.alphaMap = doorAlphaTexture;
+// material.transparent = true;
+// material.alphaMap = doorAlphaTexture;
 
 // side lets us decide which side of face is visible
 // THREE.FrontSide (default)
 // THREE.BackSide
 // THREE.DoubleSide
-material.side = THREE.DoubleSide;
+// material.side = THREE.DoubleSide;
+
+// ### MeshNormalMaterial ###
+
+const material = new THREE.MeshNormalMaterial();
+
+// material.wireframe = true;
+// material.flatShading = true;
+// material.side = THREE.DoubleSide;
+// material.transparent = true;
+// material.alphaMap = doorAlphaTexture;
 
 // Create 3 different geometries (a sphere, a plane and a torus)
 
 const sphere = new THREE.Mesh(new THREE.SphereGeometry(0.5, 16, 16), material);
 sphere.position.x = -1.5;
+// console.log(sphere.geometry.attributes);
 
 const plane = new THREE.Mesh(new THREE.PlaneGeometry(1, 1), material);
 
@@ -282,7 +294,7 @@ gui.add(mesh, "visible");
 
 gui.add(material, "wireframe");
 
-gui.addColor(material, "color");
+// gui.addColor(material, "color");
 
 // Previously to change color we have to do it other way
 

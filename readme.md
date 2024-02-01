@@ -595,3 +595,12 @@ In this we will use GSAP
                   // THREE.BackSide
                   // THREE.DoubleSide
                   material.side = THREE.DoubleSide;
+      2. MeshNormalMaterial :
+            1. Displays a nice purple color that looks like normal texture.
+            2. Normals are the information about the direction of the outside of the face.
+            3. Normals can be use for lighting, reflection, refraction etc. If the normal is in the direction of the light than the object will be visible and if the normal is in the opposite direction of light than the object is not visible.
+            4. MeshNormalMaterial shares common properties with MeshBasicMaterial like wireframe, transparent, opacity, and side. But it also include flatShading.
+
+            5. flatShading will flatten the faces, it creates squares on the surface so the surface is not smooth after this.
+            flatShading = true;
+            6. MeshNormalMaterial is usually used to debug normals
