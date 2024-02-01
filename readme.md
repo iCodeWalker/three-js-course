@@ -604,3 +604,16 @@ In this we will use GSAP
             5. flatShading will flatten the faces, it creates squares on the surface so the surface is not smooth after this.
             flatShading = true;
             6. MeshNormalMaterial is usually used to debug normals
+      3. MeshMatcapMaterial :
+            1. Display a color by using the normals as a reference to pick the right color on a texture that looks like a sphere.
+            2. const material = new THREE.MeshMatcapMaterial();
+            3. The algorithm will take colors inside the texture or pick the color inside the texture to put it on the geometry relative to the camera.
+            4. Change texture using matcap property
+            material.matcap = matcapTexture
+
+            5. We get an illusion that objects are illuminated, we don't need light for making this material visible.
+      4. MeshDepthMaterial :
+            1. MeshDepthMaterial will simply color the geometry in white if it's close to the 'near' value of the camera and will color the geomtry black if its close to the 'far' value of the camera.
+            2. const material = new THREE.MeshDepthMaterial()
+
+            IMP : MeshBasicMaterial, MeshNormalMaterial, MeshMatcapMaterial, MeshDepthMaterial Don't need light for visibility.

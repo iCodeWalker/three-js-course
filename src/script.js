@@ -251,7 +251,7 @@ const geometry = new THREE.BoxGeometry(1, 1, 1, 2, 2, 2); // width,height,depth
 
 // ### MeshNormalMaterial ###
 
-const material = new THREE.MeshNormalMaterial();
+// const material = new THREE.MeshNormalMaterial();
 
 // material.wireframe = true;
 // material.flatShading = true;
@@ -259,6 +259,24 @@ const material = new THREE.MeshNormalMaterial();
 // material.transparent = true;
 // material.alphaMap = doorAlphaTexture;
 
+// ### MeshMatcapMaterial ###
+
+// const material = new THREE.MeshMatcapMaterial();
+// material.matcap = matCapTexture;
+
+// ### MeshDepthMaterial ###
+
+// const material = new THREE.MeshDepthMaterial();
+
+// ############################ ADDING LIGHT #################################
+const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
+scene.add(ambientLight);
+
+const pointLight = new THREE.PointLight(0xffffff, 0.5);
+pointLight.position.x = 2;
+pointLight.position.y = 3;
+pointLight.position.z = 4;
+scene.add(pointLight);
 // Create 3 different geometries (a sphere, a plane and a torus)
 
 const sphere = new THREE.Mesh(new THREE.SphereGeometry(0.5, 16, 16), material);
