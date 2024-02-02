@@ -617,3 +617,25 @@ In this we will use GSAP
             2. const material = new THREE.MeshDepthMaterial()
 
             IMP : MeshBasicMaterial, MeshNormalMaterial, MeshMatcapMaterial, MeshDepthMaterial Don't need light for visibility.
+
+      5.MeshLambertMaterial :
+            1. MeshLambertMaterial will react to light.
+            2. const material = new THREE.MeshLambertMaterial().
+            3. It is performant but we can see strange pattern on the geometry. It creates some strange lines pattern on the geometry.
+
+      6. MeshPhongMaterial :
+            1. MeshPhongMaterial is similar to MeshLambertMaterial but in this material the strange pattern is less visible.
+            2. MeshPhongMaterial has reflection of light on the surface of the geometry.
+            3. It is less performant than MeshLambertMaterial.
+            4. const material = new THREE.MeshPhongMaterial()
+            5. We can control the light reflection with 'shininess' and the color of this reflection with 'specular'
+
+      7. MeshToonMaterial :
+            1. MeshToonMaterial is similar to MeshLambertMaterial but with a cartoonish feel.
+            2. const material = MeshToonMaterial()
+            3. To add more steps to the coloration, we can use 'gradientMap' property and use the 'gradientTexture'
+            4. On using gradientTexture on gradientMap property we lost the cartoonish touch on the geometry.
+            5. We see a gradient instead of a clear separation because the gradient texture is small and the 'magFilter' property tries to fix this small texture and tries to stretch and blur it using 'mipmapping'.
+
+            To fix this set 'minFilter' and 'magFilter' to THREE.NearestFilter.
+            We can also deactivate the mipmapping with gradientTexture.generateMipmaps = false

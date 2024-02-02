@@ -93,7 +93,16 @@ const doorMetalnessTexture = textureLoader.load("/textures/door/metalness.jpg");
 const doorRoughnessTexture = textureLoader.load("/textures/door/roughness.jpg");
 
 const matCapTexture = textureLoader.load("/textures/matcaps/1.png");
-const gradientTexture = textureLoader.load("/textures/gradients/3.jpg");
+const gradientTexture = textureLoader.load("/textures/gradients/5.jpg");
+// We see a gradient instead of a clear separation because the gradient texture is small
+// and the 'magFilter' property tries to fix this small texture and tries to stretch
+// and blur it using 'mipmapping'.
+
+// To fix this set 'minFilter' and 'magFilter' to THREE.NearestFilter.
+// We can also deactivate the mipmapping with gradientTexture.generateMipmaps = false
+gradientTexture.minFilter = THREE.NearestFilter;
+gradientTexture.magFilter = THREE.NearestFilter;
+gradientTexture.generateMipmaps = false;
 
 // ## TRANSFORMING TEXTURE ##
 
@@ -268,6 +277,23 @@ const geometry = new THREE.BoxGeometry(1, 1, 1, 2, 2, 2); // width,height,depth
 
 // const material = new THREE.MeshDepthMaterial();
 
+// ### MeshLambertMaterial ###
+
+// const material = new THREE.MeshLambertMaterial();
+
+// ### MeshPhongMaterial ###
+
+// const material = new THREE.MeshPhongMaterial();
+// We can control the light reflection with 'shininess' and the color of this reflection with 'specular'
+// material.shininess = 100;
+// material.specular = new THREE.Color(0x1188ff);
+
+// ### MeshToonMaterial ###
+
+const material = new THREE.MeshToonMaterial();
+// To add more steps to the coloration, we can use 'gradientMap' property and use the gradientTexture
+material.gradientMap = gradientTexture;
+
 // ############################ ADDING LIGHT #################################
 const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
 scene.add(ambientLight);
@@ -277,6 +303,7 @@ pointLight.position.x = 2;
 pointLight.position.y = 3;
 pointLight.position.z = 4;
 scene.add(pointLight);
+
 // Create 3 different geometries (a sphere, a plane and a torus)
 
 const sphere = new THREE.Mesh(new THREE.SphereGeometry(0.5, 16, 16), material);
