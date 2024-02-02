@@ -639,3 +639,29 @@ In this we will use GSAP
 
             To fix this set 'minFilter' and 'magFilter' to THREE.NearestFilter.
             We can also deactivate the mipmapping with gradientTexture.generateMipmaps = false
+
+      8. MeshStandardMaterial :
+            1. MeshStandardMaterial uses physically based rendering principle (PBR) like MeshLambertMaterial and MeshPhongMaterial, it supports light but with a more realistic algorithm and better parameters like 'roughness' and 'metalness'
+            2. const material = new THREE.MeshStandardMaterial()
+            3. We can change the roughness and the metalness.
+            4. material.map = doorColorTexture;
+            5. aoMap ('ambient occlusion map') will add shadows where the texture is dark. We must add a second set of UV named uv2.
+            6. set  UV attribute for aoMap
+                  plane.geometry.setAttribute(
+                        "uv2",
+                        new THREE.BufferAttribute(plane.geometry.attributes.uv.array, 2)
+                  );
+            7. material.aoMap = doorAmbientOcclusionTexture;
+            8. Can control the intensity with 'aoMapIntensity' property.
+            9. displacementMap will move the vertices to create relief (make an upward shift of vertices).
+            10. material.displacement = doorHeightTexture
+            11. To reduce the displacement effect we can use displacementScale.
+
+            12. Instead of using uniform 'metalness' and 'roughness' for the whole geometry, we can use 'metalnessMap' property and 'roughnessMap' property.
+            material.metalnessMap = doorMetalnessTexture
+            material.roughnessMap = doorRoughnessTexture
+            13. mormalMap will fake the normals orientation and add details on the surface regardless of the subdivision
+            material.normalMap =doorNormalTexture;
+
+            14. We can change the normal intensity with the normalScale property.
+            material.normalScale.set(0.5,0.5)
