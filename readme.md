@@ -595,3 +595,25 @@ In this we will use GSAP
                   // THREE.BackSide
                   // THREE.DoubleSide
                   material.side = THREE.DoubleSide;
+      2. MeshNormalMaterial :
+            1. Displays a nice purple color that looks like normal texture.
+            2. Normals are the information about the direction of the outside of the face.
+            3. Normals can be use for lighting, reflection, refraction etc. If the normal is in the direction of the light than the object will be visible and if the normal is in the opposite direction of light than the object is not visible.
+            4. MeshNormalMaterial shares common properties with MeshBasicMaterial like wireframe, transparent, opacity, and side. But it also include flatShading.
+
+            5. flatShading will flatten the faces, it creates squares on the surface so the surface is not smooth after this.
+            flatShading = true;
+            6. MeshNormalMaterial is usually used to debug normals
+      3. MeshMatcapMaterial :
+            1. Display a color by using the normals as a reference to pick the right color on a texture that looks like a sphere.
+            2. const material = new THREE.MeshMatcapMaterial();
+            3. The algorithm will take colors inside the texture or pick the color inside the texture to put it on the geometry relative to the camera.
+            4. Change texture using matcap property
+            material.matcap = matcapTexture
+
+            5. We get an illusion that objects are illuminated, we don't need light for making this material visible.
+      4. MeshDepthMaterial :
+            1. MeshDepthMaterial will simply color the geometry in white if it's close to the 'near' value of the camera and will color the geomtry black if its close to the 'far' value of the camera.
+            2. const material = new THREE.MeshDepthMaterial()
+
+            IMP : MeshBasicMaterial, MeshNormalMaterial, MeshMatcapMaterial, MeshDepthMaterial Don't need light for visibility.
