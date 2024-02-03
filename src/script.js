@@ -59,6 +59,19 @@ loadingManager.onError = () => {
 
 const textureLoader = new THREE.TextureLoader(loadingManager);
 
+// ########### Load cube texture loader for environment map ##########
+
+const cubeTextureLoader = new THREE.CubeTextureLoader();
+
+const environmentMapTexture = cubeTextureLoader.load([
+  "textures/environmentMaps/0/px.jpg",
+  "textures/environmentMaps/0/nx.jpg",
+  "textures/environmentMaps/0/py.jpg",
+  "textures/environmentMaps/0/ny.jpg",
+  "textures/environmentMaps/0/pz.jpg",
+  "textures/environmentMaps/0/nz.jpg",
+]);
+
 // we can send 3 functions after the path
 // load - when the image loaded successfully.
 // progress - when the loading is progress.
@@ -93,7 +106,16 @@ const doorMetalnessTexture = textureLoader.load("/textures/door/metalness.jpg");
 const doorRoughnessTexture = textureLoader.load("/textures/door/roughness.jpg");
 
 const matCapTexture = textureLoader.load("/textures/matcaps/1.png");
-const gradientTexture = textureLoader.load("/textures/gradients/3.jpg");
+const gradientTexture = textureLoader.load("/textures/gradients/5.jpg");
+// We see a gradient instead of a clear separation because the gradient texture is small
+// and the 'magFilter' property tries to fix this small texture and tries to stretch
+// and blur it using 'mipmapping'.
+
+// To fix this set 'minFilter' and 'magFilter' to THREE.NearestFilter.
+// We can also deactivate the mipmapping with gradientTexture.generateMipmaps = false
+gradientTexture.minFilter = THREE.NearestFilter;
+gradientTexture.magFilter = THREE.NearestFilter;
+gradientTexture.generateMipmaps = false;
 
 // ## TRANSFORMING TEXTURE ##
 
@@ -268,6 +290,59 @@ const geometry = new THREE.BoxGeometry(1, 1, 1, 2, 2, 2); // width,height,depth
 
 // const material = new THREE.MeshDepthMaterial();
 
+// ### MeshLambertMaterial ###
+
+// const material = new THREE.MeshLambertMaterial();
+
+// ### MeshPhongMaterial ###
+
+// const material = new THREE.MeshPhongMaterial();
+// We can control the light reflection with 'shininess' and the color of this reflection with 'specular'
+// material.shininess = 100;
+// material.specular = new THREE.Color(0x1188ff);
+
+// ### MeshToonMaterial ###
+
+// const material = new THREE.MeshToonMaterial();
+// To add more steps to the coloration, we can use 'gradientMap' property and use the gradientTexture
+// material.gradientMap = gradientTexture;
+
+// ### MeshStandardMaterial ###
+
+const material = new THREE.MeshStandardMaterial();
+// When using 'metalnessMap' and 'roughnessMap' we have to remove 'roughness' and 'metalness' or use default value for it
+// material.roughness = 0.65;
+// material.metalness = 0.45;
+material.roughness = 0.2;
+material.metalness = 0.7;
+// material.map = doorColorTexture;
+// aoMap ('ambient occlusion map') will add shadows where the texture is dark
+// material.aoMap = doorAmbientOcclusionTexture;
+// material.aoMapIntensity = 1;
+// material.displacementMap = doorHeightTexture;
+// It makes a terrible effect because it lacks vertices. And the displacement is too strong
+// material.displacementScale = 0.05;
+// Instead of using uniform 'metalness' and 'roughness' for the whole geometry,
+// we can use 'metalnessMap' property and 'roughnessMap' property.
+// material.metalnessMap = doorMetalnessTexture;
+// material.roughnessMap = doorRoughnessTexture;
+// mormalMap will fake the normals orientation and add details on the surface regardless of the subdivision
+// material.normalMap = doorNormalTexture;
+// We can change the normal intensity with the normalScale property.
+// material.normalScale.set(0.5, 0.5);
+
+// alphaMap property. The white area is visible and black is not
+// material.transparent = true;
+// material.alphaMap = doorAlphaTexture;
+
+// ####### ENVIRONMENT MAP ########
+// Creates reflection of the environment on the objects
+material.envMap = environmentMapTexture;
+
+// ### MeshPhysicalMaterial ###
+
+// const physicalMaterial = new THREE.MeshPhysicalMaterial();
+
 // ############################ ADDING LIGHT #################################
 const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
 scene.add(ambientLight);
@@ -277,19 +352,35 @@ pointLight.position.x = 2;
 pointLight.position.y = 3;
 pointLight.position.z = 4;
 scene.add(pointLight);
+
 // Create 3 different geometries (a sphere, a plane and a torus)
 
-const sphere = new THREE.Mesh(new THREE.SphereGeometry(0.5, 16, 16), material);
+const sphere = new THREE.Mesh(new THREE.SphereGeometry(0.5, 64, 64), material);
 sphere.position.x = -1.5;
 // console.log(sphere.geometry.attributes);
 
-const plane = new THREE.Mesh(new THREE.PlaneGeometry(1, 1), material);
+sphere.geometry.setAttribute(
+  "uv2",
+  new THREE.BufferAttribute(sphere.geometry.attributes.uv.array, 2)
+);
+
+const plane = new THREE.Mesh(new THREE.PlaneGeometry(1, 1, 100, 100), material);
+
+plane.geometry.setAttribute(
+  "uv2",
+  new THREE.BufferAttribute(plane.geometry.attributes.uv.array, 2)
+);
 
 const torus = new THREE.Mesh(
-  new THREE.TorusGeometry(0.3, 0.2, 16, 32),
+  new THREE.TorusGeometry(0.3, 0.2, 64, 128),
   material
 );
 torus.position.x = 1.5;
+
+torus.geometry.setAttribute(
+  "uv2",
+  new THREE.BufferAttribute(torus.geometry.attributes.uv.array, 2)
+);
 
 scene.add(sphere, plane, torus);
 
@@ -302,15 +393,20 @@ const mesh = new THREE.Mesh(geometry, material);
 // ####################### Debug ###################
 // To add elements to the panel we can use
 // gui.add(mesh.position, "y", -3, 3, 0.01);
-gui.add(mesh.position, "x", -3, 3, 0.01);
-gui.add(mesh.position, "z", -3, 3, 0.01);
+// gui.add(mesh.position, "x", -3, 3, 0.01);
+// gui.add(mesh.position, "z", -3, 3, 0.01);
 
 // can also use min(...), max(...) and step(...) methods on the gui
-gui.add(mesh.position, "y").min(-3).max(3).step(0.01).name("elevation");
+// gui.add(mesh.position, "y").min(-3).max(3).step(0.01).name("elevation");
 
-gui.add(mesh, "visible");
+// gui.add(mesh, "visible");
 
-gui.add(material, "wireframe");
+// gui.add(material, "wireframe");
+
+gui.add(material, "metalness").min(0).max(1).step(0.001);
+gui.add(material, "roughness").min(0).max(1).step(0.001);
+gui.add(material, "aoMapIntensity").min(0).max(10).step(0.001);
+gui.add(material, "displacementScale").min(0).max(1).step(0.001);
 
 // gui.addColor(material, "color");
 

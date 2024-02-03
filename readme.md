@@ -617,3 +617,63 @@ In this we will use GSAP
             2. const material = new THREE.MeshDepthMaterial()
 
             IMP : MeshBasicMaterial, MeshNormalMaterial, MeshMatcapMaterial, MeshDepthMaterial Don't need light for visibility.
+
+      5.MeshLambertMaterial :
+            1. MeshLambertMaterial will react to light.
+            2. const material = new THREE.MeshLambertMaterial().
+            3. It is performant but we can see strange pattern on the geometry. It creates some strange lines pattern on the geometry.
+
+      6. MeshPhongMaterial :
+            1. MeshPhongMaterial is similar to MeshLambertMaterial but in this material the strange pattern is less visible.
+            2. MeshPhongMaterial has reflection of light on the surface of the geometry.
+            3. It is less performant than MeshLambertMaterial.
+            4. const material = new THREE.MeshPhongMaterial()
+            5. We can control the light reflection with 'shininess' and the color of this reflection with 'specular'
+
+      7. MeshToonMaterial :
+            1. MeshToonMaterial is similar to MeshLambertMaterial but with a cartoonish feel.
+            2. const material = MeshToonMaterial()
+            3. To add more steps to the coloration, we can use 'gradientMap' property and use the 'gradientTexture'
+            4. On using gradientTexture on gradientMap property we lost the cartoonish touch on the geometry.
+            5. We see a gradient instead of a clear separation because the gradient texture is small and the 'magFilter' property tries to fix this small texture and tries to stretch and blur it using 'mipmapping'.
+
+            To fix this set 'minFilter' and 'magFilter' to THREE.NearestFilter.
+            We can also deactivate the mipmapping with gradientTexture.generateMipmaps = false
+
+      8. MeshStandardMaterial :
+            1. MeshStandardMaterial uses physically based rendering principle (PBR) like MeshLambertMaterial and MeshPhongMaterial, it supports light but with a more realistic algorithm and better parameters like 'roughness' and 'metalness'
+            2. const material = new THREE.MeshStandardMaterial()
+            3. We can change the roughness and the metalness.
+            4. material.map = doorColorTexture;
+            5. aoMap ('ambient occlusion map') will add shadows where the texture is dark. We must add a second set of UV named uv2.
+            6. set  UV attribute for aoMap
+                  plane.geometry.setAttribute(
+                        "uv2",
+                        new THREE.BufferAttribute(plane.geometry.attributes.uv.array, 2)
+                  );
+            7. material.aoMap = doorAmbientOcclusionTexture;
+            8. Can control the intensity with 'aoMapIntensity' property.
+            9. displacementMap will move the vertices to create relief (make an upward shift of vertices).
+            10. material.displacement = doorHeightTexture
+            11. To reduce the displacement effect we can use displacementScale.
+
+            12. Instead of using uniform 'metalness' and 'roughness' for the whole geometry, we can use 'metalnessMap' property and 'roughnessMap' property.
+            material.metalnessMap = doorMetalnessTexture
+            material.roughnessMap = doorRoughnessTexture
+            13. mormalMap will fake the normals orientation and add details on the surface regardless of the subdivision
+            material.normalMap =doorNormalTexture;
+
+            14. We can change the normal intensity with the normalScale property.
+            material.normalScale.set(0.5,0.5)
+      9. MeshPhysicalMaterial :
+            1. MehsPhysicalMaterial is same as MeshStandardMaterial but with a clear coat effect on the surface that is more realistic.
+            2. MehsPhysicalMaterial will use more GPU.
+      10. PointMaterial :
+            1. We can use PointMaterial with particles.
+      11. ShaderMaterial and RawShaderMaterial can be used to create our own material
+
+      IMP : ##### EnvironmnetMap #####
+            The environment map is an image of what's surrounding the scene. It can be used for reflection or refraction but also for generating light.
+            Environment maps are supported by multiple material but we are going to use MeshStandardMaterial.
+
+            To load cube texture for environment map will use CubeTextureLoader.
