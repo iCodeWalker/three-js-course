@@ -4,11 +4,100 @@ import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
 import gsap from "gsap";
 import * as lil from "lil-gui";
 
+// Scene
+const scene = new THREE.Scene();
+
+// ################### AXIS HELPER ###############
+// const axesHelper = new THREE.AxesHelper();
+// scene.add(axesHelper);
+
+// Center the text
+// ##### Using Bounding
+// The bounding is an information associated with the geometry that tells what space is taken by thtat geometry
+
+// ################### LOAD FONTS ###################
+import { FontLoader } from "three/addons/loaders/FontLoader.js";
+import { TextGeometry } from "three/addons/geometries/TextGeometry.js";
+// To load the font, we need FontLoader
+const fontLoader = new FontLoader();
+
+const font = fontLoader.load(
+  "fonts/helvetiker_regular.typeface.json",
+  // onLoad callback
+  function (font) {
+    // do something with the font
+    console.log(font);
+    // #### Next we create a geometry ####
+
+    const textGeometry = new TextGeometry("Hello World", {
+      font: font,
+      size: 0.5,
+      height: 0.2,
+      curveSegments: 3, // to reduce number of triangles in the text geometry
+      bevelEnabled: true,
+      bevelThickness: 0.03,
+      bevelSize: 0.02,
+      bevelOffset: 0,
+      bevelSegments: 5,
+    });
+
+    // textGeometry.computeBoundingBox();
+    // // The result is an instance of Box3 with min and max properties.
+    // // Instead of moving the mesh, we are going to move the whole geometry with translate(...)
+    // textGeometry.translate(
+    //   -(textGeometry.boundingBox.max.x - 0.02) * 0.5,
+    //   -(textGeometry.boundingBox.max.y - 0.02) * 0.5,
+    //   -(textGeometry.boundingBox.max.z - 0.03) * 0.5
+    // );
+    // textGeometry.computeBoundingBox();
+    // console.log(textGeometry.boundingBox);
+    textGeometry.center();
+    // const textMaterial = new THREE.MeshBasicMaterial();
+
+    const textMaterial = new THREE.MeshMatcapMaterial();
+    textMaterial.matcap = matCapTexture;
+    // textMaterial.wireframe = true;
+    const text = new THREE.Mesh(textGeometry, textMaterial);
+    scene.add(text);
+
+    // Outisde the loop
+    const donutGeometry = new THREE.TorusGeometry(0.3, 0.2, 20, 45);
+    const donutMaterial = new THREE.MeshMatcapMaterial();
+    donutMaterial.matcap = matCapTexture;
+
+    // Creating 100 random donuts
+    for (let i = 0; i < 250; i++) {
+      // To optimize this creation of similar meshes we can just put the geometry and material outisde the loop
+
+      const donut = new THREE.Mesh(donutGeometry, donutMaterial);
+
+      donut.position.x = (Math.random() - 0.5) * 10;
+      donut.position.y = (Math.random() - 0.5) * 10;
+      donut.position.z = (Math.random() - 0.5) * 10;
+
+      donut.rotation.x = Math.random() * Math.PI;
+      donut.rotation.y = Math.random() * Math.PI;
+
+      scene.add(donut);
+    }
+  },
+
+  // onProgress callback
+  function (xhr) {
+    console.log((xhr.loaded / xhr.total) * 100 + "% loaded");
+  },
+
+  // onError callback
+  function (err) {
+    console.log("An error happened");
+  }
+);
+
 // ################### TEXTURES ######################
 //  LOAD IMAGE USING JAVASCRIPT
 
 // const image = new Image();
-// we can create the texture outside of the function adn update it once the image is
+// we can create the texture outside of the function and update it once the image is
 // loaded with "needsUpdate = true"
 
 // const texture = new THREE.Texture(image); // the image we are passing here is not loaded yet
@@ -185,8 +274,8 @@ window.addEventListener("mousemove", (event) => {
   // console.log(cursor.x, cursor.y);
 });
 
-// Scene
-const scene = new THREE.Scene();
+// // Scene
+// const scene = new THREE.Scene();
 
 // Objects
 const geometry = new THREE.BoxGeometry(1, 1, 1, 2, 2, 2); // width,height,depth
@@ -382,7 +471,7 @@ torus.geometry.setAttribute(
   new THREE.BufferAttribute(torus.geometry.attributes.uv.array, 2)
 );
 
-scene.add(sphere, plane, torus);
+// scene.add(sphere, plane, torus);
 
 // Mesh
 const mesh = new THREE.Mesh(geometry, material);
