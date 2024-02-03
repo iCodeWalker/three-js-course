@@ -677,3 +677,71 @@ In this we will use GSAP
             Environment maps are supported by multiple material but we are going to use MeshStandardMaterial.
 
             To load cube texture for environment map will use CubeTextureLoader.
+
+# EIGHT CHAPTER : 3D-TEXT
+
+      We can use TextBufferGeometry class to create text in 3D.
+      We can use the fonts provided by Three.js /node_modules/three/examples/fonts/ but using directly from node_modules is not a good practice.
+
+      we can copy the typeface file and licence and copy it in 'fonts' folder that is in static folder.
+      "/static/fonts
+
+      // ################### LOAD FONTS ###################
+            import { FontLoader } from "three/addons/loaders/FontLoader.js";
+            import { TextGeometry } from "three/addons/geometries/TextGeometry.js";
+            // To load the font, we need FontLoader
+            const fontLoader = new FontLoader();
+
+            const font = fontLoader.load(
+                  "fonts/helvetiker_regular.typeface.json",
+                  // onLoad callback
+                  function (font) {
+                  // do something with the font
+                        console.log(font);
+                  // #### Next we create a geometry ####
+
+                  const textGeometry = new TextGeometry("Hello World", {
+                        font: font,
+                        size: 0.5,
+                        height: 0.2,
+                        curveSegments: 12,
+                        bevelEnabled: true,
+                        bevelThickness: 0.03,
+                        bevelSize: 0.02,
+                        bevelOffset: 0,
+                        bevelSegments: 5,
+                  });
+
+                  const textMaterial = new THREE.MeshBasicMaterial();
+                  textMaterial.wireframe = true;
+                  const text = new THREE.Mesh(textGeometry, textMaterial);
+                        scene.add(text);
+                  },
+
+                  // onProgress callback
+                  function (xhr) {
+                  console.log((xhr.loaded / xhr.total) * 100 + "% loaded");
+                  },
+
+                  // onError callback
+                  function (err) {
+                  console.log("An error happened");
+                  }
+            );
+
+      IMP : Creating a text geometry is long and hard for the computer. Avoid doing it too many times and keep the geometry as low poly as possible.
+      By reducing the 'curveSegments' and 'bevelSegments'
+
+      ## Centering the text
+      Using Bounding
+      The bounding is an information associated with the geometry that tells what space is taken by thtat geometry.
+      This helps Three.js calculate if the object is on the screen (frustum culling).
+      We will use it for recentering the geometry.
+
+      By default, Three.js is using sphere bounding.
+      Calculate the box bounding with computeBoundingBox()
+      textGeometry.computeBoundingBox()
+      // The result is an instance of Box3 with min and max properties.
+      The min property isn't at 0 because of the bevelThickness and bevelSize
+
+      // Instead of moving the mesh, we are going to move the whole geometry with translate(...)
