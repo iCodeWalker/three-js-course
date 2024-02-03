@@ -59,6 +59,19 @@ loadingManager.onError = () => {
 
 const textureLoader = new THREE.TextureLoader(loadingManager);
 
+// ########### Load cube texture loader for environment map ##########
+
+const cubeTextureLoader = new THREE.CubeTextureLoader();
+
+const environmentMapTexture = cubeTextureLoader.load([
+  "textures/environmentMaps/0/px.jpg",
+  "textures/environmentMaps/0/nx.jpg",
+  "textures/environmentMaps/0/py.jpg",
+  "textures/environmentMaps/0/ny.jpg",
+  "textures/environmentMaps/0/pz.jpg",
+  "textures/environmentMaps/0/nz.jpg",
+]);
+
 // we can send 3 functions after the path
 // load - when the image loaded successfully.
 // progress - when the loading is progress.
@@ -300,27 +313,36 @@ const material = new THREE.MeshStandardMaterial();
 // When using 'metalnessMap' and 'roughnessMap' we have to remove 'roughness' and 'metalness' or use default value for it
 // material.roughness = 0.65;
 // material.metalness = 0.45;
-material.roughness = 1;
-material.metalness = 0;
-material.map = doorColorTexture;
+material.roughness = 0.2;
+material.metalness = 0.7;
+// material.map = doorColorTexture;
 // aoMap ('ambient occlusion map') will add shadows where the texture is dark
-material.aoMap = doorAmbientOcclusionTexture;
-material.aoMapIntensity = 1;
-material.displacementMap = doorHeightTexture;
+// material.aoMap = doorAmbientOcclusionTexture;
+// material.aoMapIntensity = 1;
+// material.displacementMap = doorHeightTexture;
 // It makes a terrible effect because it lacks vertices. And the displacement is too strong
-material.displacementScale = 0.05;
+// material.displacementScale = 0.05;
 // Instead of using uniform 'metalness' and 'roughness' for the whole geometry,
 // we can use 'metalnessMap' property and 'roughnessMap' property.
-material.metalnessMap = doorMetalnessTexture;
-material.roughnessMap = doorRoughnessTexture;
+// material.metalnessMap = doorMetalnessTexture;
+// material.roughnessMap = doorRoughnessTexture;
 // mormalMap will fake the normals orientation and add details on the surface regardless of the subdivision
-material.normalMap = doorNormalTexture;
-// alphaMap property
-material.transparent = true;
-material.alphaMap = doorAlphaTexture;
-
+// material.normalMap = doorNormalTexture;
 // We can change the normal intensity with the normalScale property.
-material.normalScale.set(0.5, 0.5);
+// material.normalScale.set(0.5, 0.5);
+
+// alphaMap property. The white area is visible and black is not
+// material.transparent = true;
+// material.alphaMap = doorAlphaTexture;
+
+// ####### ENVIRONMENT MAP ########
+// Creates reflection of the environment on the objects
+material.envMap = environmentMapTexture;
+
+// ### MeshPhysicalMaterial ###
+
+// const physicalMaterial = new THREE.MeshPhysicalMaterial();
+
 // ############################ ADDING LIGHT #################################
 const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
 scene.add(ambientLight);

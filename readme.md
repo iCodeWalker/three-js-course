@@ -665,3 +665,15 @@ In this we will use GSAP
 
             14. We can change the normal intensity with the normalScale property.
             material.normalScale.set(0.5,0.5)
+      9. MeshPhysicalMaterial :
+            1. MehsPhysicalMaterial is same as MeshStandardMaterial but with a clear coat effect on the surface that is more realistic.
+            2. MehsPhysicalMaterial will use more GPU.
+      10. PointMaterial :
+            1. We can use PointMaterial with particles.
+      11. ShaderMaterial and RawShaderMaterial can be used to create our own material
+
+      IMP : ##### EnvironmnetMap #####
+            The environment map is an image of what's surrounding the scene. It can be used for reflection or refraction but also for generating light.
+            Environment maps are supported by multiple material but we are going to use MeshStandardMaterial.
+
+            To load cube texture for environment map will use CubeTextureLoader.
