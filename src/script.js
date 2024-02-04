@@ -19,79 +19,79 @@ const scene = new THREE.Scene();
 import { FontLoader } from "three/addons/loaders/FontLoader.js";
 import { TextGeometry } from "three/addons/geometries/TextGeometry.js";
 // To load the font, we need FontLoader
-const fontLoader = new FontLoader();
+// const fontLoader = new FontLoader();
 
-const font = fontLoader.load(
-  "fonts/helvetiker_regular.typeface.json",
-  // onLoad callback
-  function (font) {
-    // do something with the font
-    console.log(font);
-    // #### Next we create a geometry ####
+// const font = fontLoader.load(
+//   "fonts/helvetiker_regular.typeface.json",
+//   // onLoad callback
+//   function (font) {
+//     // do something with the font
+//     console.log(font);
+//     // #### Next we create a geometry ####
 
-    const textGeometry = new TextGeometry("Hello World", {
-      font: font,
-      size: 0.5,
-      height: 0.2,
-      curveSegments: 3, // to reduce number of triangles in the text geometry
-      bevelEnabled: true,
-      bevelThickness: 0.03,
-      bevelSize: 0.02,
-      bevelOffset: 0,
-      bevelSegments: 5,
-    });
+//     const textGeometry = new TextGeometry("Hello World", {
+//       font: font,
+//       size: 0.5,
+//       height: 0.2,
+//       curveSegments: 3, // to reduce number of triangles in the text geometry
+//       bevelEnabled: true,
+//       bevelThickness: 0.03,
+//       bevelSize: 0.02,
+//       bevelOffset: 0,
+//       bevelSegments: 5,
+//     });
 
-    // textGeometry.computeBoundingBox();
-    // // The result is an instance of Box3 with min and max properties.
-    // // Instead of moving the mesh, we are going to move the whole geometry with translate(...)
-    // textGeometry.translate(
-    //   -(textGeometry.boundingBox.max.x - 0.02) * 0.5,
-    //   -(textGeometry.boundingBox.max.y - 0.02) * 0.5,
-    //   -(textGeometry.boundingBox.max.z - 0.03) * 0.5
-    // );
-    // textGeometry.computeBoundingBox();
-    // console.log(textGeometry.boundingBox);
-    textGeometry.center();
-    // const textMaterial = new THREE.MeshBasicMaterial();
+//     // textGeometry.computeBoundingBox();
+//     // // The result is an instance of Box3 with min and max properties.
+//     // // Instead of moving the mesh, we are going to move the whole geometry with translate(...)
+//     // textGeometry.translate(
+//     //   -(textGeometry.boundingBox.max.x - 0.02) * 0.5,
+//     //   -(textGeometry.boundingBox.max.y - 0.02) * 0.5,
+//     //   -(textGeometry.boundingBox.max.z - 0.03) * 0.5
+//     // );
+//     // textGeometry.computeBoundingBox();
+//     // console.log(textGeometry.boundingBox);
+//     textGeometry.center();
+//     // const textMaterial = new THREE.MeshBasicMaterial();
 
-    const textMaterial = new THREE.MeshMatcapMaterial();
-    textMaterial.matcap = matCapTexture;
-    // textMaterial.wireframe = true;
-    const text = new THREE.Mesh(textGeometry, textMaterial);
-    scene.add(text);
+//     const textMaterial = new THREE.MeshMatcapMaterial();
+//     textMaterial.matcap = matCapTexture;
+//     // textMaterial.wireframe = true;
+//     const text = new THREE.Mesh(textGeometry, textMaterial);
+//     scene.add(text);
 
-    // Outisde the loop
-    const donutGeometry = new THREE.TorusGeometry(0.3, 0.2, 20, 45);
-    const donutMaterial = new THREE.MeshMatcapMaterial();
-    donutMaterial.matcap = matCapTexture;
+//     // Outisde the loop
+//     const donutGeometry = new THREE.TorusGeometry(0.3, 0.2, 20, 45);
+//     const donutMaterial = new THREE.MeshMatcapMaterial();
+//     donutMaterial.matcap = matCapTexture;
 
-    // Creating 100 random donuts
-    for (let i = 0; i < 150; i++) {
-      // To optimize this creation of similar meshes we can just put the geometry and material outisde the loop
+//     // Creating 100 random donuts
+//     for (let i = 0; i < 150; i++) {
+//       // To optimize this creation of similar meshes we can just put the geometry and material outisde the loop
 
-      const donut = new THREE.Mesh(donutGeometry, donutMaterial);
+//       const donut = new THREE.Mesh(donutGeometry, donutMaterial);
 
-      donut.position.x = (Math.random() - 0.5) * 10;
-      donut.position.y = (Math.random() - 0.5) * 10;
-      donut.position.z = (Math.random() - 0.5) * 10;
+//       donut.position.x = (Math.random() - 0.5) * 10;
+//       donut.position.y = (Math.random() - 0.5) * 10;
+//       donut.position.z = (Math.random() - 0.5) * 10;
 
-      donut.rotation.x = Math.random() * Math.PI;
-      donut.rotation.y = Math.random() * Math.PI;
+//       donut.rotation.x = Math.random() * Math.PI;
+//       donut.rotation.y = Math.random() * Math.PI;
 
-      scene.add(donut);
-    }
-  },
+//       scene.add(donut);
+//     }
+//   },
 
-  // onProgress callback
-  function (xhr) {
-    console.log((xhr.loaded / xhr.total) * 100 + "% loaded");
-  },
+//   // onProgress callback
+//   function (xhr) {
+//     console.log((xhr.loaded / xhr.total) * 100 + "% loaded");
+//   },
 
-  // onError callback
-  function (err) {
-    console.log("An error happened");
-  }
-);
+//   // onError callback
+//   function (err) {
+//     console.log("An error happened");
+//   }
+// );
 
 // ################### TEXTURES ######################
 //  LOAD IMAGE USING JAVASCRIPT
@@ -426,25 +426,72 @@ material.metalness = 0.7;
 
 // ####### ENVIRONMENT MAP ########
 // Creates reflection of the environment on the objects
-material.envMap = environmentMapTexture;
+// material.envMap = environmentMapTexture;
 
 // ### MeshPhysicalMaterial ###
 
 // const physicalMaterial = new THREE.MeshPhysicalMaterial();
 
 // ############################ ADDING LIGHT #################################
+
+// #### Ambient Light ####
 const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
 scene.add(ambientLight);
 
-const pointLight = new THREE.PointLight(0xffffff, 0.5);
-pointLight.position.x = 2;
-pointLight.position.y = 3;
-pointLight.position.z = 4;
+// #### Point Light ####
+// const pointLight = new THREE.PointLight(0xffffff, 0.5);
+// pointLight.position.x = 2;
+// pointLight.position.y = 3;
+// pointLight.position.z = 4;
+// scene.add(pointLight);
+
+// #### Directional Light ####
+const directionalLight = new THREE.DirectionalLight();
+directionalLight.color = new THREE.Color(0x00ffcc);
+directionalLight.intensity = 0.7;
+directionalLight.position.set(1, 0.25, 0);
+scene.add(directionalLight);
+
+// #### Hemisphere Light ####
+const hemisphereLight = new THREE.HemisphereLight(0xff0000, 0x0000ff, 0.3);
+scene.add(hemisphereLight);
+
+// #### Point Light ####
+const pointLight = new THREE.PointLight(0xff9000, 0.5, 10, 2);
+pointLight.position.set(1, -0.5, 1);
 scene.add(pointLight);
+
+// ### Rect Area Light ###
+const rectAreaLight = new THREE.RectAreaLight(0x4e00ff, 2, 3, 3);
+//can move the light and rotate it. We can use lookAt(..) to rotate it more easily
+
+rectAreaLight.position.set(-1.5, 0, 1.5);
+rectAreaLight.lookAt(new THREE.Vector3());
+scene.add(rectAreaLight);
+
+// ### Spot Light ###
+
+const spotLight = new THREE.SpotLight(
+  0x78ff00,
+  0.7,
+  10,
+  Math.PI * 0.1,
+  0.25,
+  1
+);
+
+spotLight.position.set(0, 2, 3);
+scene.add(spotLight.target);
+// To rotate SpotLight we need to add its target property to the scene and move it.
+
+spotLight.target.position.x = -0.75;
+scene.add(spotLight);
+
+gui.add(ambientLight, "intensity").min(0).max(1).step(0.001);
 
 // Create 3 different geometries (a sphere, a plane and a torus)
 
-const sphere = new THREE.Mesh(new THREE.SphereGeometry(0.5, 64, 64), material);
+const sphere = new THREE.Mesh(new THREE.SphereGeometry(0.5, 32, 32), material);
 sphere.position.x = -1.5;
 // console.log(sphere.geometry.attributes);
 
@@ -453,12 +500,16 @@ sphere.geometry.setAttribute(
   new THREE.BufferAttribute(sphere.geometry.attributes.uv.array, 2)
 );
 
-const plane = new THREE.Mesh(new THREE.PlaneGeometry(1, 1, 100, 100), material);
+const plane = new THREE.Mesh(new THREE.PlaneGeometry(6, 6, 100, 100), material);
+plane.position.y = -0.5;
+plane.rotation.x = -Math.PI * 0.5;
 
 plane.geometry.setAttribute(
   "uv2",
   new THREE.BufferAttribute(plane.geometry.attributes.uv.array, 2)
 );
+
+const box = new THREE.Mesh(new THREE.BoxGeometry(1, 1), material);
 
 const torus = new THREE.Mesh(
   new THREE.TorusGeometry(0.3, 0.2, 64, 128),
@@ -471,7 +522,7 @@ torus.geometry.setAttribute(
   new THREE.BufferAttribute(torus.geometry.attributes.uv.array, 2)
 );
 
-// scene.add(sphere, plane, torus);
+scene.add(sphere, torus, plane, box);
 
 // Mesh
 const mesh = new THREE.Mesh(geometry, material);
@@ -492,10 +543,10 @@ const mesh = new THREE.Mesh(geometry, material);
 
 // gui.add(material, "wireframe");
 
-gui.add(material, "metalness").min(0).max(1).step(0.001);
-gui.add(material, "roughness").min(0).max(1).step(0.001);
-gui.add(material, "aoMapIntensity").min(0).max(10).step(0.001);
-gui.add(material, "displacementScale").min(0).max(1).step(0.001);
+// gui.add(material, "metalness").min(0).max(1).step(0.001);
+// gui.add(material, "roughness").min(0).max(1).step(0.001);
+// gui.add(material, "aoMapIntensity").min(0).max(10).step(0.001);
+// gui.add(material, "displacementScale").min(0).max(1).step(0.001);
 
 // gui.addColor(material, "color");
 
@@ -644,13 +695,13 @@ const rotateCude = () => {
   const elapsedTime = clock.getElapsedTime();
 
   // #################### ADD ANIMATION FOR MATERIALS VIEW ##################
-  sphere.rotation.y = 0.1 * elapsedTime;
-  plane.rotation.y = 0.1 * elapsedTime;
-  torus.rotation.y = 0.1 * elapsedTime;
+  // sphere.rotation.y = 0.1 * elapsedTime;
+  // plane.rotation.y = 0.1 * elapsedTime;
+  // torus.rotation.y = 0.1 * elapsedTime;
 
-  sphere.rotation.x = 0.15 * elapsedTime;
-  plane.rotation.x = 0.15 * elapsedTime;
-  torus.rotation.x = 0.15 * elapsedTime;
+  // sphere.rotation.x = 0.15 * elapsedTime;
+  // plane.rotation.x = 0.15 * elapsedTime;
+  // torus.rotation.x = 0.15 * elapsedTime;
 
   // Update Object
   // mesh.rotation.y = elapsedTime;

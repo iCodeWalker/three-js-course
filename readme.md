@@ -745,3 +745,93 @@ In this we will use GSAP
       The min property isn't at 0 because of the bevelThickness and bevelSize
 
       // Instead of moving the mesh, we are going to move the whole geometry with translate(...)
+
+# NINTH CHAPTER : LIGHTS
+
+      1. AmbientLight :
+            The ambient light applies omnidirectional lightning. light comes from everywhere, every direction. Has 2 properties 'color' and 'intensity'.
+
+            const ambientLight = new THREE.AmbientLight(0xffffff, 0.5)
+            scene.add(ambientLight)
+
+            // Same as
+
+            const ambientLight = new THREE.AmbientLight()
+            ambientLight.color = new THREE.Color(0xffffff)
+            ambientLight.intensity = 0.5
+            scene.add(ambientLight)
+
+            we can use ambient light to simulate light bouncing.
+
+      2. DirectionalLight :
+            The DirectionalLight will have a sun-like effect as if the sun rays were travelling in parallel.
+            Has two parameter, 'color' and 'intensity'.
+
+            const directionalLight = new THREE.DirectionalLight()
+            directionalLight.color = new THREE.Color(0xffffff)
+            directionalLight.intensity = 0.5
+
+            // To change the direction, we move the light
+
+            directionalLight.position.set(1, 0.25, 0)
+
+      3. HemisphereLight :
+            The HemisphereLight is similar to the AmbientLight but with a different color coming from the up direction (sky) and different color coming from down direction (ground).
+            Has three parameter : 'color'(skyColor), 'groundColor', 'intensity
+
+            const hemisphereLight = new THREE.HemisphereLight(0xff0000, 0x0000ff, 0.3)
+            scene.add(hemisphereLight)
+
+      4. PointLight :
+            The PointLight is almost like a lighter. The light starts at an infinitely small point and spreads uniformly in every direction.
+            Has two parameter : 'color', 'intensity'
+
+            const pointLight = new THREE.PointLight(0xff9000, 0.3)
+            scene.add(pointLight)
+
+            // To change the direction, we move the light
+            pointLight.position.set(1, 0.25, 0)
+
+            By default the light intensity dosen't fade. But We can control the fade distance and how fast it fades with 'distance' and 'decay'.
+
+            const pointLight = new THREE.PointLight(0xff9000, 0.5, 10, 2);
+
+      5. RectAreaLight :
+            Works like a big rectangle lights we can see on the photoshoot set. It is a mix between a directional light and diffuse light.
+
+            Has parameter : 'color', 'intensity', 'width', 'height'
+
+            const rectAreaLight = new THREE.RectAreaLight(0x4e00ff, 2, 3, 3);
+            scene.add(rectAreaLight);
+
+            IMP : Only Works with MeshStandardMaterial and MeshPhysicalMaterial.
+
+            can move the light and rotate it. We can use lookAt(..) to rotate it more easily
+            rectAreaLight.position.set(-1.5, 0, 1.5)
+            rectAreaLight.lookAt(new THREE.Vector3())
+
+      6. SpotLight :
+            SpotLight is like a flashlight. It's like a cone of light starting at a point and oriented in a direction.
+            Has parameter : color, intensity, distance, angle, penumbra, decay
+
+            const spotLight = new THREE.SpotLight(
+                  0x78ff00,
+                  0.5,
+                  10,
+                  Math.PI * 0.1,
+                  0.25,
+                  1
+            );
+
+            spotLight.position.set(0, 2, 3);
+            scene.add(spotLight);
+
+            // To rotate SpotLight we need to add its target property to the scene and move it.
+            scene.add(spotLight.target);
+            spotLight.target.position.x = -0.75
+
+            IMP : Lights can cost a lot when it comes to performance. We have to add as few lights as posible and try to use lights that cost less.
+
+            Minimal Cost light : AmbientLight and HemisphereLight
+            Moderate Cost light : DirectionalLight and PointLight
+            High Cost light : SpotLight and RectAreaLight
