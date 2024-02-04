@@ -66,7 +66,7 @@ const font = fontLoader.load(
     donutMaterial.matcap = matCapTexture;
 
     // Creating 100 random donuts
-    for (let i = 0; i < 250; i++) {
+    for (let i = 0; i < 150; i++) {
       // To optimize this creation of similar meshes we can just put the geometry and material outisde the loop
 
       const donut = new THREE.Mesh(donutGeometry, donutMaterial);
@@ -194,7 +194,7 @@ const doorAmbientOcclusionTexture = textureLoader.load(
 const doorMetalnessTexture = textureLoader.load("/textures/door/metalness.jpg");
 const doorRoughnessTexture = textureLoader.load("/textures/door/roughness.jpg");
 
-const matCapTexture = textureLoader.load("/textures/matcaps/1.png");
+const matCapTexture = textureLoader.load("/textures/matcaps/8.png");
 const gradientTexture = textureLoader.load("/textures/gradients/5.jpg");
 // We see a gradient instead of a clear separation because the gradient texture is small
 // and the 'magFilter' property tries to fix this small texture and tries to stretch
