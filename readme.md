@@ -844,3 +844,39 @@ In this we will use GSAP
       3. PointLightHelper.
       4. RectAreaLightHelper.
       5. SpotLightHelper.
+
+# TENTH CHAPTER : SHADOWS
+
+      The dark shadow in the back of the objects are called core shadows.
+      The shadows we are missing in the sections are called drop shadows. The shadows that generates on the plane beneath the object is called drop shadow.
+
+      Shadows are a challenge for real-time 3D rendering, and we have to find tricks to display realistic shadows at a reasonable frame rate.
+
+      We have built-in solution in three.js, But it's not perfect but it is convenient.
+
+      IMP : How it works
+            1. When we do render, Three.js will do a render(different than our render) for each light supporting shadows.
+            2. These render will simulate what light sees as if it was a camera.
+            3. During these lights renders, a MeshDepthMaterial replaces all meshes material.
+            4. The light rendered are than stored as textures and we call these textures 'shadow maps'.
+            5. Than these 'shadow maps' are used on every materials supposed to receive shadows and projected on the geometry
+
+            Using shadow maps three.js draws the shadow on the plane.
+
+            1. We have to tells renderer to handle shadow maps
+                  renderer.shadowMap.enabled = true;
+
+            2. Now we have to go through each object and decide if it can cast a shadow with 'castShadow', and if can receive shadow with 'receiveShadow'
+
+                  sphere.castShadow = true;
+
+                  plane.receiveShadow = true;
+
+            3. Only three types of light support shadows.
+                  PointLight
+                  DirectionalLight
+                  SpotLight
+
+            4. Activate the shadows on the light with the 'castShadow'.
+
+                  directionalLight.castShadow = true;

@@ -402,8 +402,8 @@ const material = new THREE.MeshStandardMaterial();
 // When using 'metalnessMap' and 'roughnessMap' we have to remove 'roughness' and 'metalness' or use default value for it
 // material.roughness = 0.65;
 // material.metalness = 0.45;
-material.roughness = 0.2;
-material.metalness = 0.7;
+// material.roughness = 0.2;
+// material.metalness = 0.7;
 // material.map = doorColorTexture;
 // aoMap ('ambient occlusion map') will add shadows where the texture is dark
 // material.aoMap = doorAmbientOcclusionTexture;
@@ -447,82 +447,88 @@ scene.add(ambientLight);
 
 // #### Directional Light ####
 const directionalLight = new THREE.DirectionalLight();
-directionalLight.color = new THREE.Color(0x00ffcc);
-directionalLight.intensity = 0.7;
-directionalLight.position.set(1, 0.25, 0);
+directionalLight.color = new THREE.Color(0xffffff);
+directionalLight.intensity = 0.6;
+directionalLight.position.set(1, 0.8, 0);
+
+// ########## Activate the shadows on the light with the 'castShadow'. ###########
+directionalLight.castShadow = true;
 scene.add(directionalLight);
 
 // #### Hemisphere Light ####
-const hemisphereLight = new THREE.HemisphereLight(0xff0000, 0x0000ff, 0.3);
-scene.add(hemisphereLight);
+// const hemisphereLight = new THREE.HemisphereLight(0xff0000, 0x0000ff, 0.3);
+// scene.add(hemisphereLight);
 
 // #### Point Light ####
-const pointLight = new THREE.PointLight(0xff9000, 0.5, 10, 2);
-pointLight.position.set(1, -0.5, 1);
-scene.add(pointLight);
+// const pointLight = new THREE.PointLight(0xff9000, 0.5, 10, 2);
+// pointLight.position.set(1, -0.5, 1);
+// scene.add(pointLight);
 
 // ### Rect Area Light ###
-const rectAreaLight = new THREE.RectAreaLight(0x4e00ff, 2, 3, 3);
+// const rectAreaLight = new THREE.RectAreaLight(0x4e00ff, 2, 3, 3);
 //can move the light and rotate it. We can use lookAt(..) to rotate it more easily
 
-rectAreaLight.position.set(-1.5, 0, 1.5);
-rectAreaLight.lookAt(new THREE.Vector3());
-scene.add(rectAreaLight);
+// rectAreaLight.position.set(-1.5, 0, 1.5);
+// rectAreaLight.lookAt(new THREE.Vector3());
+// scene.add(rectAreaLight);
 
 // ### Spot Light ###
 
-const spotLight = new THREE.SpotLight(
-  0x78ff00,
-  0.7,
-  10,
-  Math.PI * 0.1,
-  0.25,
-  1
-);
+// const spotLight = new THREE.SpotLight(
+//   0x78ff00,
+//   0.7,
+//   10,
+//   Math.PI * 0.1,
+//   0.25,
+//   1
+// );
 
-spotLight.position.set(0, 2, 3);
-scene.add(spotLight.target);
+// spotLight.position.set(0, 2, 3);
+// scene.add(spotLight.target);
 // To rotate SpotLight we need to add its target property to the scene and move it.
 
-spotLight.target.position.x = -0.75;
-scene.add(spotLight);
+// spotLight.target.position.x = -0.75;
+// scene.add(spotLight);
 
 // ######################### LIGHT HELPERS #######################
 
-// ### hemisphereLightHelper
-const hemisphereLightHelper = new THREE.HemisphereLightHelper(
-  hemisphereLight,
-  0.2
-);
-scene.add(hemisphereLightHelper);
+// // ### hemisphereLightHelper
+// const hemisphereLightHelper = new THREE.HemisphereLightHelper(
+//   hemisphereLight,
+//   0.2
+// );
+// scene.add(hemisphereLightHelper);
 
-// ### directionalLightHelper
-const directionalLightHelper = new THREE.DirectionalLightHelper(
-  directionalLight,
-  0.2
-);
-scene.add(directionalLightHelper);
+// // ### directionalLightHelper
+// const directionalLightHelper = new THREE.DirectionalLightHelper(
+//   directionalLight,
+//   0.2
+// );
+// scene.add(directionalLightHelper);
 
-// ### pointLightHelper
-const pointLightHelper = new THREE.PointLightHelper(pointLight, 0.2);
-scene.add(pointLightHelper);
+// // ### pointLightHelper
+// const pointLightHelper = new THREE.PointLightHelper(pointLight, 0.2);
+// scene.add(pointLightHelper);
 
-// ### spotLightHelper
-const spotLightHelper = new THREE.SpotLightHelper(spotLight); // It has no size property
-scene.add(spotLightHelper);
-// We need to call it's update on next frame after moving the target.
+// // ### spotLightHelper
+// const spotLightHelper = new THREE.SpotLightHelper(spotLight); // It has no size property
+// scene.add(spotLightHelper);
+// // We need to call it's update on next frame after moving the target.
 
-window.requestAnimationFrame(() => {
-  spotLightHelper.update();
-});
+// window.requestAnimationFrame(() => {
+//   spotLightHelper.update();
+// });
 
 gui.add(ambientLight, "intensity").min(0).max(1).step(0.001);
 
 // Create 3 different geometries (a sphere, a plane and a torus)
 
 const sphere = new THREE.Mesh(new THREE.SphereGeometry(0.5, 32, 32), material);
-sphere.position.x = -1.5;
+sphere.position.x = 0;
 // console.log(sphere.geometry.attributes);
+
+// ############## Cast a shadow #############
+sphere.castShadow = true;
 
 sphere.geometry.setAttribute(
   "uv2",
@@ -532,6 +538,9 @@ sphere.geometry.setAttribute(
 const plane = new THREE.Mesh(new THREE.PlaneGeometry(6, 6, 100, 100), material);
 plane.position.y = -0.5;
 plane.rotation.x = -Math.PI * 0.5;
+
+// ############## Receive a shadow #############
+plane.receiveShadow = true;
 
 plane.geometry.setAttribute(
   "uv2",
@@ -551,7 +560,8 @@ torus.geometry.setAttribute(
   new THREE.BufferAttribute(torus.geometry.attributes.uv.array, 2)
 );
 
-scene.add(sphere, torus, plane, box);
+// scene.add(sphere, torus, plane, box);
+scene.add(sphere, plane);
 
 // Mesh
 const mesh = new THREE.Mesh(geometry, material);
@@ -714,6 +724,10 @@ renderer.setSize(sizes.width, sizes.height);
 // To get the current pixel ratio we use window.devicePixelRatio
 // To update the renderer accordingly, we can update the renderer we use
 renderer.setPixelRatio(window.devicePixelRatio);
+
+// ############# Activate the shadow ##############
+// This tells renderer to handle shadow maps
+renderer.shadowMap.enabled = true;
 
 // renderer.render(scene, camera);
 
