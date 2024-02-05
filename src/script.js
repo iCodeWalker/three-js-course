@@ -756,6 +756,9 @@ renderer.setPixelRatio(window.devicePixelRatio);
 // This tells renderer to handle shadow maps
 renderer.shadowMap.enabled = true;
 
+// ############# To change the shadow map algorithm ###########
+renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+
 // renderer.render(scene, camera);
 
 // ############### Clock

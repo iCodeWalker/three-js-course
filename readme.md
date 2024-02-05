@@ -920,3 +920,16 @@ In this we will use GSAP
 
             4. We can control the shadow blur with the radius property
                   directionalLight.shadow.radius = 10
+
+      ## Shadow Map Algorithm
+            Different types of algorithms can be applied to shadow maps
+            1. THREE.BasicShadowMap : Very performant but lousy quality.
+            2. THREE.PCFShadowMap : Less performant but smoother edges (default).
+            3. THREE.PCFSoftShadowMap : Less performant but even softer edges.
+            4. THREE.VSMShadowMap : Less performant, more constraints, can have unexpected results.
+
+            To use new algorithm:
+            update the renderer.shadowMap.type
+
+            renderer.shadowMap.type = THREE.PCFSoftShadowMap
+            IMP : radius dosen't work with THREE.PCFSoftShadowMap
