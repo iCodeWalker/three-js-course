@@ -835,3 +835,12 @@ In this we will use GSAP
             Minimal Cost light : AmbientLight and HemisphereLight
             Moderate Cost light : DirectionalLight and PointLight
             High Cost light : SpotLight and RectAreaLight
+
+## Light Helpers
+
+      To help positioning the lights, we can use helpers
+      1. HemisphereLightHelper.
+      2. DirectionalLightHelper.
+      3. PointLightHelper.
+      4. RectAreaLightHelper.
+      5. SpotLightHelper.

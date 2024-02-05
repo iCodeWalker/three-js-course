@@ -487,6 +487,35 @@ scene.add(spotLight.target);
 spotLight.target.position.x = -0.75;
 scene.add(spotLight);
 
+// ######################### LIGHT HELPERS #######################
+
+// ### hemisphereLightHelper
+const hemisphereLightHelper = new THREE.HemisphereLightHelper(
+  hemisphereLight,
+  0.2
+);
+scene.add(hemisphereLightHelper);
+
+// ### directionalLightHelper
+const directionalLightHelper = new THREE.DirectionalLightHelper(
+  directionalLight,
+  0.2
+);
+scene.add(directionalLightHelper);
+
+// ### pointLightHelper
+const pointLightHelper = new THREE.PointLightHelper(pointLight, 0.2);
+scene.add(pointLightHelper);
+
+// ### spotLightHelper
+const spotLightHelper = new THREE.SpotLightHelper(spotLight); // It has no size property
+scene.add(spotLightHelper);
+// We need to call it's update on next frame after moving the target.
+
+window.requestAnimationFrame(() => {
+  spotLightHelper.update();
+});
+
 gui.add(ambientLight, "intensity").min(0).max(1).step(0.001);
 
 // Create 3 different geometries (a sphere, a plane and a torus)
