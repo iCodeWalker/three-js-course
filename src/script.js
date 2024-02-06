@@ -451,9 +451,36 @@ directionalLight.color = new THREE.Color(0xffffff);
 directionalLight.intensity = 0.6;
 directionalLight.position.set(1, 0.8, 0);
 
+scene.add(directionalLight);
+
 // ########## Activate the shadows on the light with the 'castShadow'. ###########
 directionalLight.castShadow = true;
-scene.add(directionalLight);
+console.log(directionalLight.shadow);
+
+// Changing render size of the shadow.
+directionalLight.shadow.mapSize.width = 1024;
+directionalLight.shadow.mapSize.height = 1024;
+
+// Reducing Amplitude to have a detailed shadow.
+directionalLight.shadow.camera.top = 2;
+directionalLight.shadow.camera.right = 2;
+directionalLight.shadow.camera.bottom = -2;
+directionalLight.shadow.camera.left = -2;
+
+// Controling Near and Far.
+directionalLight.shadow.camera.near = 1;
+directionalLight.shadow.camera.far = 6;
+
+// can control the shadow blur with the radius property
+directionalLight.shadow.radius = 10;
+
+// Directional light camera helper.
+const directionalLightCameraHelper = new THREE.CameraHelper(
+  directionalLight.shadow.camera
+);
+// We can hide camera helper
+directionalLightCameraHelper.visible = false;
+scene.add(directionalLightCameraHelper);
 
 // #### Hemisphere Light ####
 // const hemisphereLight = new THREE.HemisphereLight(0xff0000, 0x0000ff, 0.3);
@@ -728,6 +755,9 @@ renderer.setPixelRatio(window.devicePixelRatio);
 // ############# Activate the shadow ##############
 // This tells renderer to handle shadow maps
 renderer.shadowMap.enabled = true;
+
+// ############# To change the shadow map algorithm ###########
+renderer.shadowMap.type = THREE.PCFSoftShadowMap;
 
 // renderer.render(scene, camera);
 

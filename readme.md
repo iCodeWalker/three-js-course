@@ -880,3 +880,56 @@ In this we will use GSAP
             4. Activate the shadows on the light with the 'castShadow'.
 
                   directionalLight.castShadow = true;
+
+      ## Optimizing Shadow
+
+            1. Render Size :
+                  The shadow map has a width and a height so we can change it
+                  We can access the shadow map  in the shadow property of the each light
+                  console.log(directionalLight.shadow)
+
+                  By default, the shadow map size is 512x512. We can improve it but keep it in poer of 2.
+
+                  directionalLight.shadow.mapSize.width = 1024;
+                  directionalLight.shadow.mapSize.height = 1024;
+
+            2. Near and Far
+                  As we are doing render for the shadows we have control over the near and far of the light camera.
+
+                  directionalLight.shadow.camera.near = 1;
+                  directionalLight.shadow.camera.far = 6;
+
+                  We can use CameraHelper with the camera used for the shadow map located in the directionalLight.
+
+                  const directionalLightCameraHelper = new THREE.CameraHelper(directionalLight.shadow.camera);
+                  scene.add(directionalLightCameraHelper)
+
+            3. Amplitude :
+                  Control the size of render.
+                  With the camera helper we can see that the amplitude is too large.
+                  Because we are using a DirectionalLight, Three.js is using an OrthographicCamera.
+
+                  By reducing the amplitude we reduced the render so we can have a much more detailed on every edges of the sphere.
+
+                  directionalLight.shadow.camera.top = 2;
+                  directionalLight.shadow.camera.right = 2;
+                  directionalLight.shadow.camera.bottom = -2;
+                  directionalLight.shadow.camera.left = -2;
+
+                  IMP : The smaller the values, the more precise the shadow will be. But if it too small, the shadows will be cropped
+
+            4. We can control the shadow blur with the radius property
+                  directionalLight.shadow.radius = 10
+
+      ## Shadow Map Algorithm
+            Different types of algorithms can be applied to shadow maps
+            1. THREE.BasicShadowMap : Very performant but lousy quality.
+            2. THREE.PCFShadowMap : Less performant but smoother edges (default).
+            3. THREE.PCFSoftShadowMap : Less performant but even softer edges.
+            4. THREE.VSMShadowMap : Less performant, more constraints, can have unexpected results.
+
+            To use new algorithm:
+            update the renderer.shadowMap.type
+
+            renderer.shadowMap.type = THREE.PCFSoftShadowMap
+            IMP : radius dosen't work with THREE.PCFSoftShadowMap
