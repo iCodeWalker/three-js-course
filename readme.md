@@ -997,3 +997,15 @@ In this we will use GSAP
                   directionalLight.castShadow = false;
                   spotLight.castShadow = false;
                   pointLight.castShadow = false;
+
+                  // Loading baked texture
+                  const textureLoader = new THREE.TextureLoader();
+                  const bakedShadow = textureLoader.load("/textures/bakedShadow.jpg");
+
+                  const plane = new THREE.Mesh(
+                        new THREE.PlaneGeometry(6, 6, 100, 100),
+                        new THREE.MeshStandardMaterial({
+                        map: bakedShadow,
+                  })
+                  );
+                  // IMP : It is not dynamic, if we move sphere the shadow won't move as it is baked in the texture

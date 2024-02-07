@@ -206,6 +206,9 @@ gradientTexture.minFilter = THREE.NearestFilter;
 gradientTexture.magFilter = THREE.NearestFilter;
 gradientTexture.generateMipmaps = false;
 
+// ###################### LOAD THE SHADOW #################
+const bakedShadow = textureLoader.load("/textures/bakedShadow.jpg");
+
 // ## TRANSFORMING TEXTURE ##
 
 // =============== Repeat
@@ -620,7 +623,18 @@ sphere.geometry.setAttribute(
   new THREE.BufferAttribute(sphere.geometry.attributes.uv.array, 2)
 );
 
-const plane = new THREE.Mesh(new THREE.PlaneGeometry(6, 6, 100, 100), material);
+// For using a baked shadow we will use MeshBasicMaterial instead of MeshStandardMaterial on the plane material
+// with the bakedShadow
+
+// IMP : It is not dynamic, if we move sphere the shadow won't move as it is baked in the texture
+
+const plane = new THREE.Mesh(
+  new THREE.PlaneGeometry(6, 6, 100, 100),
+  new THREE.MeshStandardMaterial({
+    map: bakedShadow,
+  })
+);
+// const plane = new THREE.Mesh(new THREE.PlaneGeometry(6, 6, 100, 100), material);
 plane.position.y = -0.5;
 plane.rotation.x = -Math.PI * 0.5;
 
