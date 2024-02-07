@@ -208,6 +208,7 @@ gradientTexture.generateMipmaps = false;
 
 // ###################### LOAD THE SHADOW #################
 const bakedShadow = textureLoader.load("/textures/bakedShadow.jpg");
+const simpleShadow = textureLoader.load("/textures/simpleShadow.jpg");
 
 // ## TRANSFORMING TEXTURE ##
 
@@ -628,13 +629,15 @@ sphere.geometry.setAttribute(
 
 // IMP : It is not dynamic, if we move sphere the shadow won't move as it is baked in the texture
 
-const plane = new THREE.Mesh(
-  new THREE.PlaneGeometry(6, 6, 100, 100),
-  new THREE.MeshStandardMaterial({
-    map: bakedShadow,
-  })
-);
-// const plane = new THREE.Mesh(new THREE.PlaneGeometry(6, 6, 100, 100), material);
+// const plane = new THREE.Mesh(
+//   new THREE.PlaneGeometry(6, 6, 100, 100),
+//   new THREE.MeshStandardMaterial({
+//     map: bakedShadow,
+//   })
+// );
+
+// For alternative baked shadow
+const plane = new THREE.Mesh(new THREE.PlaneGeometry(6, 6, 100, 100), material);
 plane.position.y = -0.5;
 plane.rotation.x = -Math.PI * 0.5;
 
@@ -659,8 +662,21 @@ torus.geometry.setAttribute(
   new THREE.BufferAttribute(torus.geometry.attributes.uv.array, 2)
 );
 
+// Create a plane slightly above the floor with an alphaMap using the simpleShadow
+const sphereShadow = new THREE.Mesh(
+  new THREE.PlaneGeometry(1.5, 1.5),
+  new THREE.MeshBasicMaterial({
+    color: 0x000000,
+    transparent: true,
+    alphaMap: simpleShadow,
+  })
+);
+
+sphereShadow.rotation.x = -Math.PI * 0.5;
+sphereShadow.position.y = plane.position.y + 0.01;
+
 // scene.add(sphere, torus, plane, box);
-scene.add(sphere, plane);
+scene.add(sphere, plane, sphereShadow);
 
 // Mesh
 const mesh = new THREE.Mesh(geometry, material);
@@ -868,6 +884,18 @@ const rotateCude = () => {
   // // For moving camera around y-axis
   // camera.position.y = cursor.y * 5;
   // camera.lookAt(mesh.position);
+
+  // ## Baked Image ##
+  // ######## Update the sphere ########
+  // Have a bouncing animation
+  sphere.position.x = Math.cos(elapsedTime) * 1.5;
+  sphere.position.z = Math.sin(elapsedTime) * 1.5;
+  sphere.position.y = Math.abs(Math.sin(elapsedTime * 3));
+
+  // Update the shadow
+  sphereShadow.position.x = sphere.position.x;
+  sphereShadow.position.z = sphere.position.z;
+  sphereShadow.material.opacity = (1 - Math.abs(sphere.position.y)) * 0.5;
 
   // #################### USING BUILT-IN CONTROL ##################
 
