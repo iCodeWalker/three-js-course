@@ -933,3 +933,79 @@ In this we will use GSAP
 
             renderer.shadowMap.type = THREE.PCFSoftShadowMap
             IMP : radius dosen't work with THREE.PCFSoftShadowMap
+
+      ## SPOTLIGHT
+
+      const spotLight = new THREE.SpotLight(0xffffff, 0.4, 10, Math.PI * 0.3);
+
+      spotLight.castShadow = true;
+
+      spotLight.position.set(0, 2, 2);
+
+      scene.add(spotLight);
+      scene.add(spotLight.target);
+
+      IMP : Mixing shadows doesn't look good and there is not so much to do about it.
+      We can improve the shadow quality using the same technics that we have used for directional light
+
+      1. Reduce size :
+            // Changing render size of the shadow.
+            spotLight.shadow.mapSize.width = 1024;
+            spotLight.shadow.mapSize.height = 1024;
+
+            We are using a SpotLight,So Three.js is using a PerspectiveCamera,
+            We have to change the 'fov' property to adapt the amplitude
+
+            spotLight.shadow.camera.fov = 30
+
+            // Controling the Near and Far
+            spotLight.shadow.camera.near = 1;
+            spotLight.shadow.camera.far = 6;
+
+      ## POINTlIGHT
+
+            const pointLight = new THREE.PointLight(0xffffff, 0.3);
+
+            pointLight.position.set(-1, 1, 0);
+            scene.add(pointLight);
+
+            // ########## Activate the shadows on the light with the 'castShadow'. ###########
+            pointLight.castShadow = true;
+
+            IMP : The camera used by the Point light seems to be PerspectiveCamera pointing downward.
+            Three.js uses a PerspectiveCamera but in all 6 directions and finishes downward.
+            Three.js do render in all 6 directions of the cube. And the last is in the downward direction.
+            And that is a lot of render done by three.js before our render is done.
+
+            If we add 10 point lights than three.js will do 10*6 = 60 renders before our render is done
+
+            // Changing render size of the shadow.
+            pointLight.shadow.mapSize.width = 1024;
+            pointLight.shadow.mapSize.height = 1024;
+
+            IMP : We cannot control the 'fov' in point light. It will create a mess.
+
+            // Controling the Near and Far
+            pointLight.shadow.camera.near = 0.11;
+            pointLight.shadow.camera.far = 6;
+
+            ## Baking shadows
+
+                  A good alternative is to bake shadows. We integrate shadows in textures that apply on the materials.
+
+                  IMP : To deactivate all shadows we can do.
+                  directionalLight.castShadow = false;
+                  spotLight.castShadow = false;
+                  pointLight.castShadow = false;
+
+                  // Loading baked texture
+                  const textureLoader = new THREE.TextureLoader();
+                  const bakedShadow = textureLoader.load("/textures/bakedShadow.jpg");
+
+                  const plane = new THREE.Mesh(
+                        new THREE.PlaneGeometry(6, 6, 100, 100),
+                        new THREE.MeshStandardMaterial({
+                        map: bakedShadow,
+                  })
+                  );
+                  // IMP : It is not dynamic, if we move sphere the shadow won't move as it is baked in the texture
