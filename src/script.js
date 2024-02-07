@@ -435,7 +435,7 @@ const material = new THREE.MeshStandardMaterial();
 // ############################ ADDING LIGHT #################################
 
 // #### Ambient Light ####
-const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
+const ambientLight = new THREE.AmbientLight(0xffffff, 0.3);
 scene.add(ambientLight);
 
 // #### Point Light ####
@@ -448,7 +448,7 @@ scene.add(ambientLight);
 // #### Directional Light ####
 const directionalLight = new THREE.DirectionalLight();
 directionalLight.color = new THREE.Color(0xffffff);
-directionalLight.intensity = 0.6;
+directionalLight.intensity = 0.3;
 directionalLight.position.set(1, 0.8, 0);
 
 scene.add(directionalLight);
@@ -481,6 +481,64 @@ const directionalLightCameraHelper = new THREE.CameraHelper(
 // We can hide camera helper
 directionalLightCameraHelper.visible = false;
 scene.add(directionalLightCameraHelper);
+
+// #### Spot Light ####
+
+const spotLight = new THREE.SpotLight(0xffffff, 0.3, 10, Math.PI * 0.3);
+
+// ########## Activate the shadows on the light with the 'castShadow'. ###########
+spotLight.castShadow = true;
+
+// Changing render size of the shadow.
+spotLight.shadow.mapSize.width = 1024;
+spotLight.shadow.mapSize.height = 1024;
+
+// Have to change the 'fov' property to adapt the amplitude
+spotLight.shadow.camera.fov = 30;
+
+// Controling the Near and Far
+spotLight.shadow.camera.near = 1;
+spotLight.shadow.camera.far = 6;
+
+spotLight.position.set(0, 2, 2);
+
+scene.add(spotLight);
+
+// Add Spot Light Helper
+const spotLightCameraHelper = new THREE.CameraHelper(spotLight.shadow.camera);
+// We can hide camera helper
+spotLightCameraHelper.visible = false;
+scene.add(spotLightCameraHelper);
+
+// ### Point Light ###
+
+const pointLight = new THREE.PointLight(0xffffff, 0.3);
+
+pointLight.position.set(-1, 1, 0);
+scene.add(pointLight);
+
+// ########## Activate the shadows on the light with the 'castShadow'. ###########
+pointLight.castShadow = true;
+
+// Changing render size of the shadow.
+pointLight.shadow.mapSize.width = 1024;
+pointLight.shadow.mapSize.height = 1024;
+
+// Controling the Near and Far
+pointLight.shadow.camera.near = 0.11;
+pointLight.shadow.camera.far = 5;
+
+// Add Point Light camera Helper
+const pointLightCameraHelper = new THREE.CameraHelper(pointLight.shadow.camera);
+// We can hide camera helper
+pointLightCameraHelper.visible = false;
+scene.add(pointLightCameraHelper);
+
+// ####### Deactivating all shadows ########
+
+directionalLight.castShadow = false;
+spotLight.castShadow = false;
+pointLight.castShadow = false;
 
 // #### Hemisphere Light ####
 // const hemisphereLight = new THREE.HemisphereLight(0xff0000, 0x0000ff, 0.3);
