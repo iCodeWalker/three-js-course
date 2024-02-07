@@ -1009,3 +1009,12 @@ In this we will use GSAP
                   })
                   );
                   // IMP : It is not dynamic, if we move sphere the shadow won't move as it is baked in the texture
+
+            ## Baking shadows alternative
+
+                  We will use a more simpler baked shadow and move it so it stays under the sphere.
+
+                  IMP : We will put the texture on a plane that is a bit above our plane and below the sphere and when we move the sphere we will move the plane as well
+                  and if the sphere moves in vertical direction we will reduce or increase the alpha.
+
+                  For this we will use MeshStandardMaterial()
